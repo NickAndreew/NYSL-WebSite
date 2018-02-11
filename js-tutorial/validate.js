@@ -1,0 +1,1 @@
+document.forms.sample.onsubmit = function(event) { return (event.target.user.value !== "") && (event.target.age.value !== "")};

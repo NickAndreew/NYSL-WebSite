@@ -1,0 +1,18 @@
+<DOCTYPE html!>
+<html>
+<head>
+
+</head>
+<body>
+  <input type="text" id="filterText" />
+  <br/>
+  <select multiple>
+    <option>apples</option>
+    <option>apricots</option>
+    <option>blueberry</option>
+    <option>acai</option>
+    <option>bananas</option>
+    <option>cherry</option>
+  </select>
+</body>
+</html>

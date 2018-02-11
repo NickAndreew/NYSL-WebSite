@@ -1,0 +1,295 @@
+<!doctype HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
+    <title>Validating Forms with JavaScript - Part 2: Helping the User</title>
+  <link type="text/css" rel="stylesheet" href="validate.css">
+</head>
+<body class="part2">
+
+<div id="taskBlock">
+	<ul>
+
+            <li id="task1">
+            	<span>1.</span>   
+                <a class="taskLink" href="validate-pt1.html">Catching Errors</a>
+            </li>
+        
+            <li id="task2">
+		<span>2.</span>   
+                <a class="taskLink" href="validate-pt2.html">Helping the User</a>
+            </li>
+
+            <li id="task3">
+		<span>3.</span>   
+                <a class="taskLink" href="validate-pt3.html">Using Patterns</a>
+            </li>
+        
+    </ul>
+</div>
+
+<div id="fixedHeader"></div>
+<div id="subNavColor"></div>
+
+  <form id="sample" name="sample" action="show_data.html" method="GET">
+    <div><label for="user">User: </label><input id="user" name="user" type="text"></div>
+    <div><label for="age">Age: </label><input name="age" type="text"></div>
+    <div><input type="submit" value="Submit Form"></div>
+  </form>
+
+  <div id="main-content">
+      <h1 id="courseName">Validating Forms with JavaScript - Part 2: Helping the User</h1>
+    
+    <h2>Our unhelpful form</h2>
+    
+      <p>If you haven't done <a href="validate-pt1.html">Part 1: Catching Errors</a>, do so
+    first. This page is trying to load a file you build in Part 1.</p>
+    
+    <p>If you have done Part 1, there is something that needs fixing:
+    The interface is very user unfriendly.
+    It's unfriendly because if the user forgets something, all the user
+    sees is that submitting doesn't work. The user has no idea what's
+    wrong. Some web forms work just about like that. They'll say "please
+    fill in all information" but won't tell you what you left out. Others will
+    tell you about one thing missing, so you fix that, then it will tell you
+    about something else, then something else, etc. What you'd like is 
+    to be told all the things that need
+    fixing.</p>
+  
+    <h2>Messages in a bottle</h2>
+    
+    <p>To handle the user-unfriendly problem, we will change our code
+    to construct a message listing all the fields that need better values.
+    The usual way to represent a message about a problem is with a string, 
+    such as <tt>"The user field needs a name"</tt>. We can use
+    the empty string to represent "no problem."
+    </p>
+    
+    <p>We need three pieces of code:</p>
+    
+    <ul>
+      <li>code that returns <tt>"The user field needs
+      a name"</tt> if the user input field is empty</li>
+      <li>code that returns <tt>"The age field needs
+      a number"</tt> if the age field doesn't have a number</li>
+      <li>code that says "if there are any messages, show them to the user
+      and return false, otherwise return true"</li>
+    </ul>
+    
+    <p>That last bit of code will be the function we use for <tt>onsubmit</tt>.</p>
+    
+    <h2>A little help from my friends</h2>
+    
+    <p>When I see "piece of code," I immediately think "define a function."
+    Most programming
+    consists of defining lots of small functions and assembling them together.</p>
+    
+    <p>So we're going to define two functions: one to check the user
+    field and one to check the age field. Each function should:</p>
+    
+    <ul>
+      <li>take one parameter, namely an input text field to check</li>
+      <li>inspect the value of that field</li>
+      <li>return either a message about a problem with the value, or the empty string if
+      there's no problem</li>
+    </ul>
+    
+    <p>It's always good to do coding in very small steps. So first, let's
+    just define the <tt>validateUser</tt> function to display the value in
+    the input field it is given but
+    always return the empty string. Add this code
+    to <tt>validate.js</tt>:</p>
+    
+    <pre class="code-example">function validateUser(userField) {
+  alert(userField.value);
+  return "";
+}</pre>
+
+    <p>Save and load. Enter some text into the user field in the form. In the Console,
+    enter:</p>
+    
+    <pre class="code-example">validateUser(document.forms.sample.user)</pre>
+    
+    <p>This passes to <tt>validateUser</tt> the user input field. You should see 
+    the value you entered in the form appear. Assuming it does, you're
+    ready for the crucial step.</p>
+   
+    <h2>I said "if..."</h2>
+    
+    <p>For <tt>validateUser</tt>, we want code that returns
+    <tt>"The user field needs a name"</tt> if the user input field is empty,
+    and returns the empty string otherwise. The secret is the
+    IF statement. Change <tt>validateUser</tt> to this:</p>
+    
+    <pre class="code-example">function validateUser(userField) {
+  if (userField.value === "") {
+    return "The user field needs a name.\n";
+  }
+  else {
+    return "";
+  }
+}</pre>
+    
+    <p>An IF statement typically has the following form, including
+    parentheses and braces:</p>
+
+    <pre class="code-example">if (<em>test-code</em>) {
+  <em>then-code</em>
+}
+else {
+  <em>else-code</em>
+}
+</pre>    
+    
+    <p>The <em>test-code</em> should be some JavaScript expression
+    that returns true or false. If <em>test-code</em> is true, JavaScript
+    will execute the <em>then-code</em>. 
+    If <em>test-code</em> is false, then JavaScript will execute
+    the <em>else-code</em> instead.</p>
+    
+    <p>In the code above, if the user field is empty, the IF 
+    statement will return <tt>"The user field needs a name.\n"</tt>, otherwise
+    , it will return the empty string.
+    The <tt>\n</tt> is a special character sequence that adds a line
+    break when the line is printed.
+    We put it in our string so that, if there
+    are multiple messages, each one will be on its own line.</p>
+    
+    <p>Save and load. Clear the user field in the form. In the Console,
+    enter:</p>
+    
+    <pre class="code-example">validateUser(document.forms.sample.user)</pre>
+    
+    <p>You should see <tt>"The user field needs a name."</tt> as
+    the return value. Now enter something in the form field and try again. You should
+    see no message.</p>
+    
+    <p>If that worked, write the same kind of code for <tt>validateAge</tt>. The 
+    message should say "The age field needs a number.\n" Save, load, and test
+    as you just tested <tt>validateUser</tt>.</p>
+    
+    <h2>Review</h2>
+    
+    <p>This seems like a good point to review what you've seen so far.</p>
+    
+    <ul>
+      <li><b>named functions</b>: A named function is code you can
+      call by giving the name of the function followed by any arguments
+      it needs in parentheses.</li>
+      
+      <li><b>IF statements</b>: An IF statement lets you write code
+      that does either A or B, depending on whether some test is true.
+      A and B are often called the <b>branches</b> of the IF.
+      </li>
+      
+      <li><b>\n</b>: the 2-character sequence <tt>\n</tt> in strings
+      will be printed as a line break.</li>
+    </ul>
+    
+    <h2>Stringing things together</h2>
+    
+    <p>Now that we have functions to check each field, we want
+    <tt>validateSampleForm</tt> to collect the messages they return. 
+    To collect strings, we "add" them using the <tt>+</tt> 
+    operator. In JavaScript, as in some other languages, <tt>+</tt>
+    will add numbers and concatenate strings. To see how this works,
+    try the following in the Console.</p>
+
+    <pre class="code-example">"abc" + "de"</pre>
+    
+    <pre class="code-example">"abc" + "de" + "fgh"</pre>
+    
+    <pre class="code-example">"abc" + "" + "fgh"</pre>
+    
+    <pre class="code-example">"" + ""</pre>
+    
+    <p>Notice how an empty string "disappears" since it has no characters
+    to add, and how if you concatenate all empty strings, you
+    get an empty string.</p>
+  
+    <p>We want to collect the results of our two functions into 
+    a <b>local variable</b>, so
+    it can't affect or be affected by any other code. In JavaScript, you
+    create a local variable with <tt>var</tt>. We're going to
+    make two local variables here, and display the result for testing.
+    Add this new <tt>validateSampleForm</tt> function to your
+    <tt>validate.js</tt> file:</p>
+    
+    <pre class="code-example">function validateSampleForm(event) {
+  var form = event.target;
+  var messages = validateUser(form.user) + validateAge(form.age);
+  alert(messages);
+  return false;
+}</pre>
+  
+    <p>We made the local variable <tt>form</tt> to simplify the next line of code.
+    We made the local variable <tt>messages</tt> to hold the 
+    combined result of the strings returned by the two functions.
+    Notice how we pass the appropriate input field
+    as arguments to the field validating functions.</p>
+
+    <p>Now update your <tt>onsubmit</tt> code to call this new 
+    <tt>validateSampleForm</tt> function:</p>
+
+    <pre class="code-example">document.forms.sample.onsubmit =
+  function(event) {
+    return validateSampleForm(event);
+  };</pre>
+    
+    <p>Save and reload. You shouldn't see
+    any error messages. Try submitting the form with different combinations
+    of fields filled in. You should see the right messages but not be able to submit
+    the form.</p>
+    
+    <h2>If you have nothing to say</h2>
+    
+    <p>If you're getting the right messages, the last thing to do is
+    change <tt>validateSampleForm</tt> so that if <tt>messages</tt> is empty,
+    nothing is displayed and true is returned, but if it is not empty,
+    then the messages should be shown and false returned. This is another
+    IF statement, very much like the ones you wrote for the helper functions.
+    The only difference is that in the ELSE branch you have to call <tt>alert</tt>
+    and then call <tt>return</tt>. The function exits as soon as <tt>return</tt>
+    is called so you can't do the alert after it</p>
+
+    <pre class="code-example">function validateSampleForm(event) {
+  var form = event.target;
+  var messages = validateUser(form.user) + validateAge(form.age);
+  if (messages === "") {
+    return true;
+  }
+  else {
+    alert(messages);
+    return false;
+  }
+}</pre>
+
+    <h2>Review</h2>
+    
+    <p>Just a few new things.</p>
+    
+    <ul>
+      <li><b>string concatenation</b>: You can concatenate strings
+      together with the addition operator. Adding an empty string to
+      a string is like adding 0 to a number.</li>
+      
+      <li><b>multi-step branches</b>: The THEN and ELSE branches
+      of an IF can have more than one step in them.
+      </li>
+    </ul>
+  
+    <h2>What's Next</h2>
+    
+    <p>Congratulations! You've learned to use IF statements, a major
+    concept in programming, and developed a much friendlier interface.
+    Take another walk. When you're ready, come back for
+      <a href="validate-pt3.html">Part 3: Using Patterns</a>, where we'll deal with 
+    the fact that the validator is pretty weak. It lets some
+    clearly bad data get through.</p>
+     
+  </div>
+<div class="authorBio"><img src="Chris-Riesbeck.jpg" width="80" alt="Chris Riesbeck Photo" class="authorPhoto" /><div class="authorInfo"><h2>About the Author</h2>Chris Riesbeck holds a Ph.D. and M.A. in Computer Science from Stanford University and was the Acting Director for the Center for Technology and Social Behavior at Northwestern University. Currently, Chris is an Associate Professor in the Department of Electrical Engineering and Computer Science at Northwestern University.</div>
+</div>
+
+</body>
+</html>

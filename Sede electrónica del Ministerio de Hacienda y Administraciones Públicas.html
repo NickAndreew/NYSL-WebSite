@@ -1,0 +1,417 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0088)https://sede.administracionespublicas.gob.es/icpplustie/controlador?accion=AC_GRABARCITA -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es"><!--<![endif]--><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+	
+    
+    	<title>Sede electrónica del Ministerio de Hacienda y Administraciones Públicas</title>
+    
+	<meta http-equiv="Expires" content="-1">
+	<meta http-equiv="Last-Modified" content="0">
+	<meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+	<meta http-equiv="Pragma" content="no-cache">
+
+	<link rel="shortcut icon" href="https://sede.administracionespublicas.gob.es/icpplustie/material/css/eSede/images/logo.ico">	
+    
+
+
+
+
+<link href="./Sede electrónica del Ministerio de Hacienda y Administraciones Públicas_files/cssEsede_icp.css" type="text/css" rel="stylesheet">
+
+	<link href="./Sede electrónica del Ministerio de Hacienda y Administraciones Públicas_files/print.css" type="text/css" media="print" rel="stylesheet">    
+	
+	<script type="text/javascript" async="" src="./Sede electrónica del Ministerio de Hacienda y Administraciones Públicas_files/ga.js.&#1041;&#1077;&#1079; &#1085;&#1072;&#1079;&#1074;&#1072;&#1085;&#1080;&#1103;"></script><script src="./Sede electrónica del Ministerio de Hacienda y Administraciones Públicas_files/icp.js.&#1041;&#1077;&#1079; &#1085;&#1072;&#1079;&#1074;&#1072;&#1085;&#1080;&#1103;" language="javascript" type="text/javascript"></script>    
+
+	
+	<link href="./Sede electrónica del Ministerio de Hacienda y Administraciones Públicas_files/standard.css" rel="stylesheet" type="text/css"> 
+	<script type="text/javascript" src="./Sede electrónica del Ministerio de Hacienda y Administraciones Públicas_files/js"></script> 
+   	<script src="./Sede electrónica del Ministerio de Hacienda y Administraciones Públicas_files/geocoder.js.&#1041;&#1077;&#1079; &#1085;&#1072;&#1079;&#1074;&#1072;&#1085;&#1080;&#1103;" language="javascript" type="text/javascript"></script>    
+
+	
+    <link rel="stylesheet" href="./Sede electrónica del Ministerio de Hacienda y Administraciones Públicas_files/dhtmlwindow.css" type="text/css">
+	<script type="text/javascript" src="./Sede electrónica del Ministerio de Hacienda y Administraciones Públicas_files/dhtmlwindow.js.&#1041;&#1077;&#1079; &#1085;&#1072;&#1079;&#1074;&#1072;&#1085;&#1080;&#1103;"></script></head><body onbeforeunload="haPinchadoArribaYSimilares()" onload="initialize();" scroll="auto"><div id="dhtmlwindowholder"><span style="display:none">.</span></div>
+    <link rel="stylesheet" href="./Sede electrónica del Ministerio de Hacienda y Administraciones Públicas_files/modal.css" type="text/css">
+	<script type="text/javascript" src="./Sede electrónica del Ministerio de Hacienda y Administraciones Públicas_files/modal.js.&#1041;&#1077;&#1079; &#1085;&#1072;&#1079;&#1074;&#1072;&#1085;&#1080;&#1103;"></script><div id="interVeil"></div>
+	
+
+
+
+
+
+ 
+   		<div id="general_wrap_layer"> 
+	 
+ 
+
+	
+
+		<div id="headerNew">
+			<div id="topBar">
+				<div>
+					<a href="https://sede.administracionespublicas.gob.es/icpplustie/controlador?accion=AC_GRABARCITA#principal" id="accGotoContent">Ir al contenido</a>
+				</div>
+			</div>
+			<div>				
+				<h1>
+					<a title="Secretaría de Estado de Administraciones Públicas, Ministerio de Hacienda y Administraciones Públicas" href="https://sede.administracionespublicas.gob.es/">
+						<img alt="Secretaría de Estado de Administraciones Públicas, Ministerio de Hacienda y Administraciones Públicas" src="./Sede electrónica del Ministerio de Hacienda y Administraciones Públicas_files/logo_ministerio.gif">
+						<span>
+							<span>Sede electrónica</span>
+							<em>Secretaría de Estado de Administraciones Públicas</em>
+						</span>
+					</a>
+				</h1>
+				
+			</div>
+		</div>
+		<div id="mainMenuNew">
+			<div id="nav">
+				<ul class="menu">
+					<li><a href="https://sede.administracionespublicas.gob.es/">Inicio</a></li>
+					<li><a href="https://sede.administracionespublicas.gob.es/procedimientos/">Procedimientos</a></li>
+					<li><a href="https://sede.administracionespublicas.gob.es/expedientes/">Mis Expedientes</a></li>
+					<li><a href="https://sede.administracionespublicas.gob.es/notificaciones/">Mis notificaciones</a></li>
+			        <li><a href="https://sede.administracionespublicas.gob.es/pagina/index/directorio/ayuda_de_navegacion">Ayuda</a></li>
+				</ul>
+			</div>
+		</div>
+	
+
+
+	<input type="hidden" value="Va a salir de la aplicación web de Cita Previa
+
+¿Esta usted seguro?" id="litSalirSeguro">
+    <input type="hidden" value="INTERNET CITA PREVIA" id="litICP">	
+
+
+<script>
+
+	function msgSalir(url)
+		{
+			var litSalirSeguro =  document.getElementById("litSalirSeguro").value;
+			var litICP =  document.getElementById("litICP").value;
+			
+			if (confirm(litICP+"\n\n"+litSalirSeguro)) 
+				{ 			
+					document.forms[0].action="/icpplustie/controlador?accion=AC_SALIR_APLICACION";
+					document.forms[0].submit();
+					window.location=url;
+				}	
+		}
+</script>
+
+	<form name="procedimientos" action="https://sede.administracionespublicas.gob.es/icpplustie/controlador?accion=AC_GRABARCITA" method="post">
+	 
+	      
+	
+	<input type="hidden" name="alert_gracias" id="alert_gracias" value="Ministerio de Hacienda y Administraciones Públicas
+
+Gracias por usar el servico de Internet Cita Previa.
+">
+	<input type="hidden" name="msj_recordatorio_imprimir_justificante" id="msj_recordatorio_imprimir_justificante" value="Va a salir de la aplicación web de Cita Previa
+
+Le recordamos que es IMPORTANTE ANOTAR EL NÚMERO DE JUSTIFICANTE, para posibles anulaciones de la cita.
+
+¿Esta usted seguro?">
+	<input type="hidden" name="alert_gracias_reagrupacion_map" id="alert_gracias_reagrupacion_map" value="Gracias por usar el servicio de Internet Cita Previa
+para trámites de Reagrupación familiar.
+
+Ministerio de Hacienda y Administraciones Públicas">
+	<input type="hidden" name="status_reagrupacion" id="status_reagrupacion" value="MHAP Cita Previa Reagrupación Familiar">			
+    <input type="hidden" id="accion" name="accion" value="">
+    <input type="hidden" id="txtIdCita" name="txtIdCita" value="">
+
+
+
+    <div id="principal">
+    <h1 class="miSede" style="text-align:left; margin:10px 15px; padding-left:30px;">INTERNET CITA PREVIA</h1>		
+	<br>
+	<div class="centraTabla">
+
+
+        
+	               
+  
+			<table style=" width:95%;border:0px solid green">
+                <tbody><tr>
+                    <td><h2 style=" margin-left:10px;text-align:left">INFORMACIÓN EN LA OFICINA DE EXTRANJEROS DE BARCELONA</h2></td>
+                    <td style=" width:15%">
+                        <h2 style="text-align:right">Paso 5 de 5</h2>
+                    </td>
+                </tr>       
+				<tr>
+                    <td style=" margin-left:20px; text-align:left; font-weight:bold">              
+                    CITA CONFIRMADA Y GRABADA                         
+                    </td>
+                    <td style=" text-align:right; font-weight:bold">
+                    <span style=" font-weight:bold">FIN DEL PROCESO</span>
+                    </td>                                    
+            	</tr>                                              
+        	</tbody></table>          
+  
+  
+
+            <br>
+            <br>
+
+			<table border="0" cellspacing="0" cellpadding="0" style="width:70%" align="center">
+			<tbody><tr>
+				<td>					
+
+                <table style="width:100%;" class="bordeICPplus">
+					<tbody><tr>
+						<td class="tituloTabla" style="font-size:18px">
+							Nº de Justificante de cita: 
+
+                            <span id="justificanteFinal" class="justificanteBold">                            
+							AFXCXX2S
+                            </span>
+						</td>
+					</tr>                        	
+	             </tbody></table>
+				
+                <table style="width:100%; margin-top:10px" class="bordeICPplus">
+                    <tbody><tr>
+                        <td class="tituloTabla" colspan="2">
+	                        DATOS DEL CITADO
+                        </td>
+                    </tr>			
+                    <tr>
+                        <td class="textoTablaIzq" style="text-align:right" width="30%">CITADO:</td>
+                        <td class="textoTablaDcha" style="font-size:1.2em; font-weight:bold">MYKYTA ANDREIEV -  ER805452</td>
+                    </tr>						
+					                                           
+                    <tr>
+                        <td class="textoTablaIzq" style="text-align:right" width="30%">Teléfono:</td>
+                        <td class="textoTablaDcha" style="font-size:1.2em; font-weight:bold">632 860 774</td>
+                    </tr>						
+                    
+                    <tr>
+                        <td class="textoTablaIzq" style="text-align:right" width="30%">Año de nacimiento:</td>
+                        <td class="textoTablaDcha" style="font-size:1.2em; font-weight:bold"> 1997</td>
+                    </tr><tr>    
+                    
+					
+                        <td class="textoTablaIzq" style="text-align:right" width="30%">e-Mail:</td>
+                        <td class="textoTablaDcha" style="font-size:1.2em; font-weight:bold">NICKANDREEV47@GMAIL.COM</td>
+                    </tr>
+                                        
+					    
+					                    
+                    <tr>
+                        <td class="textoTablaIzq" style="text-align:right" width="30%">Observaciones:</td>
+                        <td class="textoTablaDcha" style="font-size:1.2em; font-weight:bold">INFORMACION NIE</td>
+                    </tr>                                            	              
+                    
+					                                        
+                </tbody></table>
+                 
+                <table style="width:100%;margin-top:10px" class="bordeICPplus">
+                    <tbody><tr>
+                        <td colspan="2" class="tituloTabla">
+                            DATOS DE LA CITA
+                        </td>
+                    </tr>						
+                    <tr>	
+                        <td class="textoTablaIzq">
+                            Dirección: 
+                        </td>
+                        <td class="textoTablaDcha" style="font-size:1.2em; font-weight:bold">
+                            PASSEIG SANT JOAN 189 BARCELONA 08037
+							<a style="margin-left:15px; font-size:10px" onclick="F_verMAPA(&#39;PASSEIG SANT JOAN 189 BARCELONA 08037&#39;)">VER MAPA</a>
+                        </td>
+                    </tr>						
+                    <tr>
+                        <td class="textoTablaIzq">
+                            Día de la cita: 
+                        </td>
+                        <td class="textoTablaDcha" style="font-size:1.2em; font-weight:bold">
+                            09/10/2017
+                        </td>
+                    </tr>						
+                    <tr>
+                        <td class="textoTablaIzq">
+                            Hora cita: 
+                        </td>
+                        <td class="textoTablaDcha" style="font-size:1.2em; font-weight:bold">
+                            13:12
+                        </td>
+                    </tr>
+                    															                                                                
+                </tbody></table>
+						
+                </td>
+            </tr>
+            </tbody></table>
+
+				
+		
+        <div style=" text-align:center; font-size:1.2em" class="filaclara">
+        Fecha de reserva de la cita:&nbsp;06/10/2017
+        </div>
+        <br>
+	<!--  POR SI DESHABILITAN EL JAVASCRIPT -->
+    <noscript>
+        &lt;center&gt;
+            &lt;font color="red"&gt;
+                &lt;b&gt;
+                LO SENTIMOS, PERO SEGÚN PARECE SU NAVEGADOR TIENE DESHABILITADA LA EJECUCIÓN DE JAVASCRIPT.
+                &lt;br&gt;&lt;br&gt;
+                Por favor, habilite la ejecución de javascript para poder hacer uso del sistema.
+                &lt;/b&gt;
+            &lt;/font&gt;
+        &lt;/center&gt;
+    </noscript> 
+    <!--  POR SI DESHABILITAN EL JAVASCRIPT -->                                                            
+        
+        <table style="width:70%">
+			<tbody><tr>
+				<td>
+                <p>
+                <span style=" font-weight:bold">NOTA:</span>
+
+					                   	
+                        Es necesario que al acudir a la cita lleve toda la documentación necesaria correspondiente a esta solicitud. Es recomendable que consulte con la Oficina o Unidad de Extranjeros de la provincia correspondiente cual es la documentación específica requerida en su caso.</p><p>
+                        </p><p>
+                        Puede descargar el Modelo Oficial de solicitud desde la siguiente página:&nbsp;
+                        <a href="http://extranjeros.empleo.gob.es/es/ModelosSolicitudes/" target="_blank" title="Modelos Oficiales (ventana nueva)" class="siteVentanaNuevos">
+                        http://extranjeros.empleo.gob.es/es/ModelosSolicitudes/</a>
+                        </p>									
+					
+					
+					
+										
+
+
+        		<p class="textoGranate">
+                <u>Su cita ha sido confirmada.</u> Debe imprimir este justificante, y aportarlo el día de la cita.
+                </p>
+        		<p class="textoGranate" style="font-weight:bold">
+                <span style="font-weight:bold">IMPORTANTE:</span> <u>No olvide anotar el<strong> nº de justificante</strong> para posibles anulaciones de cita.</u>									                    
+                </p>
+                </td>                            
+            </tr>
+    	</tbody></table>
+    	<br><br>
+
+        <table style="width:70%">
+            <tbody><tr>
+                <td align="center" width="50%">
+                
+                
+				<input type="button" class="button" value="Salir" onclick="goAc_opc_direct()">
+			    
+                
+                </td>			
+                <td align="center" width="50%">
+                <input type="button" class="button" value="Imprimir" onclick="javascript:window.open(&#39;/icpplustie/material/jsp/plantillas/printjustificante.jsp&#39;, &#39;noimporta&#39;, &#39;width=590, height=500, scrollbars=YES&#39;)"> 
+                </td>			                
+            </tr>
+        </tbody></table>
+					
+                    
+<br>
+<br>
+
+
+		<div id="map_canvas"></div> 
+
+
+<br>
+
+
+
+</div>
+</div>
+</form></div>
+
+	
+	
+
+
+<div id="footerNew">
+	<!-- <div id="footerSitemap">
+		<ul>
+			<li>
+				<h5>Procedimientos</h5>
+				<ul>
+				<li><a href="https://sede.mpt.gob.es/procedimientos/index/categoria/29">Recursos, peticiones y reclamaciones</a></li><li><a href="https://sede.mpt.gob.es/procedimientos/index/categoria/31">Entidades locales</a></li><li><a href="https://sede.mpt.gob.es/procedimientos/index/categoria/32">Sugerencias y quejas</a></li><li><a href="https://sede.mpt.gob.es/procedimientos/index/categoria/33">Tasas</a></li><li><a href="https://sede.mpt.gob.es/procedimientos/index/categoria/34">Extranjería</a></li><li><a href="https://sede.mpt.gob.es/procedimientos/index/categoria/35">Certificaciones y cursos</a></li><li><a href="https://sede.mpt.gob.es/procedimientos/index/categoria/36">Subvenciones</a></li><li><a href="https://sede.mpt.gob.es/procedimientos/index/categoria/37">Expropiaciones</a></li><li><a href="https://sede.mpt.gob.es/procedimientos/index/categoria/39">Régimen de incompatibilidades</a></li><li><a href="https://sede.mpt.gob.es/procedimientos/index/categoria/40">Sanciones administrativas</a></li><li><a href="https://sede.mpt.gob.es/procedimientos/index/categoria/30">Funcionarios</a></li><li><a href="https://sede.mpt.gob.es/procedimientos/index/categoria/41">Autorizaciones administrativas</a></li>         
+				</ul>
+			</li>
+			<li>
+				<h5>Trámites destacados</h5>
+				<ul>
+				<li><a title="Procedimiento de prueba ricardo.blanco" href="https://sede.mpt.gob.es/procedimientos/choose-ambit/idp/280">Procedimiento de prueba...</a></li>
+				</ul>
+			</li>
+			<li>
+				<h5>Utilidades</h5>
+				<ul>
+				<li><a title="Ayuda" href="https://sede.mpt.gob.es/pagina/index/directorio/ayuda/seccion/utilidades/">Ayuda</a></li>
+				</ul>
+			</li>
+			<li>
+				<h5>Enlaces</h5>
+				<ul>
+				<li><a title="Google" target="_blank" href="http://www.google.es">Google</a></li>
+				</ul>
+			</li>
+		</ul>
+	</div>-->
+	<ul id="footerMenuNew">
+		<!-- 
+		<li><a title="accesibilidad" href="https://sede.mpt.gob.es/pagina/index/directorio/accesibilidad/seccion/utilidades">Accesibilidad</a></li>
+		<li><a title="Mapa Web" href="https://sede.mpt.gob.es/pagina/index/directorio/mapaweb/seccion/utilidades">Mapa Web</a></li>
+		<li><a title="avisos_legales" href="https://sede.mpt.gob.es/pagina/index/directorio/avisolegal/seccion/utilidades">Aviso Legal</a></li>
+		<li><a title="Contactar" href="https://sede.mpt.gob.es/pagina/index/directorio/contactar/seccion/utilidades">Contacto</a></li>
+		 -->
+	</ul>
+	<p id="copyright">© Ministerio de Hacienda y Administraciones Públicas</p>
+	<script type="text/javascript">
+		function getMaximoVertical(){
+			return window.innerHeight ? window.innerHeight : document.body.clientHeight;
+		}
+		document.getElementById('principal').style.height= getMaximoVertical() - document.getElementById('footerNew').innerHeight + "px";
+	</script>
+</div>
+
+
+
+
+
+
+<script type="text/javascript">
+	var ua = 'UA-33444577-1';
+	var _gaq = _gaq || [];
+  	_gaq.push(['_setAccount', ua]);
+  	_gaq.push(['_trackPageview']);
+
+  	(function() {
+  		if(ua!='null' && ua!=''){
+	    	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    	ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  		}
+  	})(); 
+</script>
+		
+
+    
+    
+    
+
+
+	
+
+	<script type="text/javascript">
+    	document.onkeydown = haPulsadoAltF4;
+    	document.onkeydown = haPulsadoF5;
+		document.onkeydown = deshabilitaF4F5F6;
+		document.onkeydown = haPulsadoCtrl_R;    	
+	</script>    
+
+
+
+
+   
+	</body></html>

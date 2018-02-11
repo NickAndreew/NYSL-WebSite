@@ -1,0 +1,72 @@
+		
+	function F_verMAPA(loca)
+		{
+		//alert("F_verMAPA loca:"+loca);
+		var randomnumber=Math.floor(Math.random()*90000000000);
+		//var loca = document.getElementById("address").value;
+		listaMesasWindow=dhtmlmodal.open('VentanaMesas', 'iframe', '/icpplustie/material/jsp/capas/geocoder.jsp?rn='+randomnumber+'&loca='+loca, 'Mapa de la oficina', 'width=600px,height=400px,center=1,resize=0,scrolling=0')
+	
+		listaMesasWindow.onclose=function(){ //Define custom code to run when window is closed
+			//var theform  = this.contentDoc.forms[0] //Access first form inside iframe just for your reference
+			//alert("CERRADA");
+			}
+		}
+		
+	var geocoder;
+	var map;
+	function initialize() {
+		geocoder = new google.maps.Geocoder();
+		var myOptions = {
+		zoom: 12,
+		mapTypeId: google.maps.MapTypeId.ROADMAP
+		}
+		map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+		this.doGeolocation(map);
+	}
+ 
+	function doGeolocation(map){
+		try{
+			// Try W3C Geolocation (Preferred)
+			if(navigator.geolocation) {
+				browserSupportFlag = true;
+				navigator.geolocation.getCurrentPosition(function(position) {
+					initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+					map.setCenter(initialLocation);
+				}, function() {
+					handleNoGeolocation(browserSupportFlag);
+				});
+			// Try Google Gears Geolocation
+			} else if (google.gears) {
+				browserSupportFlag = true;
+				var geo = google.gears.factory.create('beta.geolocation');
+				geo.getCurrentPosition(function(position) {
+					initialLocation = new google.maps.LatLng(position.latitude,position.longitude);
+					map.setCenter(initialLocation);
+				}, function() {
+					handleNoGeoLocation(browserSupportFlag);
+				});
+			// Browser doesn't support Geolocation
+			} else {
+				browserSupportFlag = false;
+				handleNoGeolocation(browserSupportFlag);
+			}
+		} catch (e){
+			//alert("Error al tratar de realizar la geolocalización: " + e.message);
+		}
+
+	}
+	function codeAddress() {
+		var address = document.getElementById("address").value;
+		//alert(address);
+		geocoder.geocode( { 'address': address}, function(results, status) {
+			if (status == google.maps.GeocoderStatus.OK) {
+				map.setCenter(results[0].geometry.location);
+				var marker = new google.maps.Marker({
+				    map: map, 
+				    position: results[0].geometry.location
+				});
+				} else {
+				alert("Geocode was not successful for the following reason: " + status);
+			}
+		});
+  	}

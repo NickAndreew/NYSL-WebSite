@@ -1,0 +1,1719 @@
+ 
+// SAD 21/09/2009
+// Varible global para no tener que cambiar cada una de las funciones!
+//	var gServer="LOCAL";
+//	var gServer="MAZINGERZ";
+//	var gServer="AFRODITAA";	
+	var gServer="REAL";
+//	var version="ICPplus v2.8cert-MPT "; //SAD 27/12/2010
+	var version="ICPplus v3.0.3"; //SAD 31/05/2011
+
+
+/*.................................................
+function disableCode(e) {
+	if (event.button == 2 || event.button == 3) {
+		alert("\nMinisterio de Administraciones P�blicas\n\n\t"+version);
+		return false;
+	}
+	return true;
+}
+.................................................*/
+/*
+	Funcion que desabilita la pulsaci�n de determinadas teclas
+*/
+/* ............................................................................
+function disableKey() {
+	if (event.keyCode==116 ){ //Aceleradores con F5
+        event.returnValue=false;
+		}
+	}
+............................................................................. */
+
+/*
+	Funci�n para validar el DNI.
+	E: Cadena que contiene un DNI
+	S: True el DNI es v�lido, false 
+	en caso contrario		
+*/	
+function validaDNI (strDni) {
+	alfa="abcdefghijklmnñopqrstuvwxyz";
+	strLenDni = strDni.length;		
+	numDni =strDni.substr(0,strLenDni-1);		
+	vletras=["T","R","W","A","G","M","Y","F","P","D","X","B","N","J","Z","S","Q","V","H","L","C","K","E","T"];
+	
+	letraDni =strDni.substr(strLenDni-1,1);
+	
+	if (isNaN(numDni)) //La parte númerica contiene alguna letra
+		return false;
+		
+	if (alfa.indexOf(letraDni.toLowerCase())==-1)//No acaba con una letra
+		return false;
+	else
+		letraDni=letraDni.toUpperCase();
+			
+	while (numDni.length<8){ //Completa con 0 por la izquierda
+		numDni="0"+numDni;
+		}
+
+	//document.procedimientos.txtNieAux.value=numDni;//RELLENO CON CEROS
+
+
+	valDni = numDni % 23;
+	
+	if (valDni>vletras.length-1)//Desborda el array
+		return false;
+		
+	letraAux=vletras[valDni];		
+				
+	return (letraDni===letraAux)?true:false;
+}
+
+
+/*
+	Función para validar el NIE.
+	E: Cadena que contiene un NIE
+	S: True el NIE es válido, false
+	en caso contrario		
+*/
+function validaNIE (strNie) {
+//	alert("dentro:"+strNie);
+	strLenNie = strNie.length;	
+	alfa="abcdefghijklmnñopqrstuvwxyz";		
+	
+
+	if (strNie.substr(0,1)!='X' && strNie.substr(0,1)!='x'){ //No empieza por X			
+		return false;
+		}
+
+	letraNie =strNie.substr(strLenNie-1,1)
+
+	if (alfa.indexOf(letraNie)==-1 && (alfa.toUpperCase()).indexOf(letraNie)==-1)//No acaba con una letra
+		return false;
+	else
+		letraNie=letraNie.toUpperCase();
+
+	numNie =strNie.substr(1,strLenNie-2);
+
+
+
+	if (isNaN(numNie)) //La parte númerica contiene alguna letra
+		return false;
+
+
+
+	while (numNie.length<8){ //Completa con 0 por la izquierda
+		numNie="0"+numNie;
+		}
+
+//	alert("RETORNO: "+strNie.substr(0,1)+numNie+strNie.substr(strLenNie-1,1));
+
+	document.procedimientos.nieInm.value=strNie.substr(0,1)+numNie+strNie.substr(strLenNie-1,1);
+		
+	vletras=["T","R","W","A","G","M","Y","F","P","D","X","B","N","J","Z","S","Q","V","H","L","C","K","E","T"];
+			
+	valNie = numNie % 23;
+	
+	if (valNie>vletras.length-1) //Desborda el array
+		return false;
+		
+	letraAux=vletras[valNie];		
+	
+	return (letraNie===letraAux)?true:false			
+}  
+  
+/*
+	Función para validar el CIF.
+	E: Cadena que contiene un CIF
+	S: True el CIF es válido, false
+	en caso contrario
+*/
+function validaCIF (strCif) {
+	strLenCif = strCif.length;
+	
+	alfa="abcdefghijklmnñopqrstuvwxyz";
+	fchar=strCif.substr(0,1);//Recoge el primer caracter first char
+	
+	lchar=strCif.substr(strLenCif-1,1)//Recoge el último caracter last char
+
+	var valido=false;
+	if (alfa.indexOf(fchar)==-1 && (alfa.toUpperCase()).indexOf(fchar)==-1) //No empieza con una letra
+	    return false;
+	else
+		fchar=fchar.toUpperCase();
+
+	if (alfa.indexOf(lchar)==-1 && (alfa.toUpperCase()).indexOf(lchar)==-1)//No acaba con una letra
+		valido=true;
+	else
+		lchar=lchar.toUpperCase();
+	
+	if(valido)
+		numCif =strCif.substr(1,strLenCif-1);
+	else
+		numCif =strCif.substr(1,strLenCif-2);
+		
+	
+	if (isNaN(numCif)) //La parte númerica contiene alguna letra
+		return false;
+
+    if (numCif.length !=7 && numCif.length != 8)//La parte númerica solo puede conterner 7 u 8 caracteres
+        return false;
+
+	return true;
+}
+
+/*
+	Función para validar eliminar espacios en blanco.
+	E: Cadena a tratar
+	S: Cadena sin espacios en blanco
+	en caso contrario		
+*/
+function trim(msg) {
+	
+	if (msg!=null)
+		{
+	     return msg.replace(/ /gi,'');
+		}
+		else  return true;
+
+}
+
+/*
+	Función que comprueba si la direccion introducida
+	es una dirección de correo válida
+	E: Cadena a comprobar si es una direccion de correo
+	S: True la direccion introducida es válida y false en
+	caso contrario
+*/
+function isEmail (s){
+    
+    var i = 1;
+    var sLength = s.length;
+    while ((i < sLength) && (s.charAt(i) != "@"))
+    	i++;
+    
+
+    if ((i >= sLength) || (s.charAt(i) != "@")) 
+    	return false;
+    else 
+    	i += 2;
+
+    while ((i < sLength) && (s.charAt(i) != "."))
+    	i++;
+    
+
+    if ((i >= sLength - 1) || (s.charAt(i) != ".")) 
+    	return false;
+    else 
+    	return true;
+	}
+	
+	
+/* -------------------------------------------------------------------------------------------- */	
+
+/*
+	Función para validar el NIE.
+	E: Cadena que contiene un NIE
+	S: True el DNI es válido, false 
+	en caso contrario		
+
+
+function validaNIE (strNie,tipo) 
+	{
+	strLenNie = strNie.length;
+	alfa="abcdefghijklmnñopqrstuvwxyz";		
+			
+	if (strNie.substr(0,1)!='X' && strNie.substr(0,1)!='x')
+		{ //No empieza por X			
+		alert("N.I.E. Incorrecto\n\nEl N.I.E. debe comenzar por la letra 'X'.");
+		return false;		
+		}
+	
+	letraNie =strNie.substr(strLenNie-1,1)
+	if (alfa.indexOf(letraNie)==-1 && (alfa.toUpperCase()).indexOf(letraNie)==-1)
+		{//No acaba con una letra
+		alert("N.I.E. Incorrecto\n\nEl N.I.E. debe acabar por una letra.");
+		return false;
+		}
+	else
+		letraNie=letraNie.toUpperCase();
+	
+	numNie =strNie.substr(1,strLenNie-2);
+
+	// SAD:14/03/2006    Si usamos - lo toma como signo 'menos' 
+
+	// SAD 05/07/2006   replaceAll(numNie,".","@") Para depurar los '.' dentro del NIE
+
+	if (isNaN(replaceAll(numNie,".","@")) || numNie < 0) 	
+		{ //La parte númerica contiene alguna letra
+		alert("N.I.E. Incorrecto\n\nEl N.I.E. introducido es incorrecto, por favor revíselo antes de continuar.");
+		return false;
+		}
+
+
+
+
+
+	numNie = HacerTrim(numNie);
+
+	while (numNie.length<8)
+		{//Completa con 0 por la izquierda
+		numNie="0"+numNie;
+		}
+
+    if (tipo==1)
+        document.procedimientos.docEmp.value=strNie.substr(0,1)+numNie+strNie.substr(strLenNie-1,1);
+    else if (tipo==2)
+        document.procedimientos.docFam.value=strNie.substr(0,1)+numNie+strNie.substr(strLenNie-1,1);
+    else if (tipo==0)
+        document.FrmDatos.txtNie.value=strNie.substr(0,1)+numNie+strNie.substr(strLenNie-1,1);
+				
+	vletras=["T","R","W","A","G","M","Y","F","P","D","X","B","N","J","Z","S","Q","V","H","L","C","K","E","T"];
+			
+	valNie = numNie % 23;
+	
+	if (valNie>vletras.length-1)
+		{ //Desborda el array
+		alert("N.I.E. Incorrecto\n\nEl N.I.E. introducido es incorrecto, por favor revíselo antes de continuar.");
+		return false;
+		}
+		
+	letraAux=vletras[valNie];		
+
+			
+	if (letraNie != letraAux)
+		alert("N.I.E. Incorrecto\n\nEl N.I.E. introducido es incorrecto, por favor revíselo antes de continuar.");
+	
+
+	return (letraNie===letraAux)?true:false			
+}  */
+
+var win = null;
+function NewWindow(mypage,myname,w,h,scroll)
+	{
+	LeftPosition = (screen.width) ? (screen.width-w)/2 : 0;
+	TopPosition = (screen.height) ? (screen.height-h)/2 : 0;
+	TopPosition = TopPosition - 10;
+	settings =	'height='+h+',width='+w+',top='+TopPosition+',left='+LeftPosition+',scrollbars='+scroll+',resizable'
+	win = window.open(mypage,myname,settings)
+	}
+
+
+	function abrir(direccion, pantallacompleta, herramientas, direcciones, estado, barramenu, barrascroll, cambiatamano, ancho, alto, izquierda, arriba, sustituir){
+    	var opciones = "fullscreen=" + pantallacompleta +
+                 ",toolbar=" + herramientas +
+                 ",location=" + direcciones +
+                 ",status=" + estado +
+                 ",menubar=" + barramenu +
+                 ",scrollbars=" + barrascroll +
+                 ",resizable=" + cambiatamano +
+                 ",width=" + ancho +
+                 ",height=" + alto +
+                 ",left=" + izquierda +
+                 ",top=" + arriba;
+     	var ventana = window.open(direccion,"venta",opciones,sustituir);
+		return false;
+
+	}
+
+	/*
+	-----------------------------------------------
+	NUEVA Función para validar el NIE. (X, Y y Z)
+	E: Cadena que contiene un NIE
+	S: True el DNI es válido, false 
+	en caso contrario		
+	SAD 04.07.2008
+  	----------------------------------------------- 
+	*/
+
+function validaNIE2008 (strNie) 
+	{	
+	// ---- no olvidar que tb hay que usar la función "HacerTrim"
+	
+	
+	strLenNie = strNie.length;
+	alfa="abcdefghijklmnñopqrstuvwxyz";		
+	
+	var strPerfijo = strNie.substr(0,1);
+			
+	if (strPerfijo!='X' && strPerfijo!='x' && strPerfijo!='Y' && strPerfijo!='y' && strPerfijo!='Z' && strPerfijo!='z')
+		{ //No empieza por X Y Z			
+		alert("N.I.E. Incorrecto\n\nEl N.I.E. debe comenzar por la letra 'X', 'Y' o 'Z'.");
+		return false;		
+		}
+	
+	strPerfijo = strPerfijo.toUpperCase();
+	
+	
+	letraNie =strNie.substr(strLenNie-1,1)
+	if (alfa.indexOf(letraNie)==-1 && (alfa.toUpperCase()).indexOf(letraNie)==-1)
+		{//No acaba con una letra
+		alert("N.I.E. Incorrecto\n\nEl N.I.E. debe acabar por una letra.");
+		return false;
+		}
+	else
+		letraNie=letraNie.toUpperCase();
+	
+	numNie =strNie.substr(1,strLenNie-2);
+
+	// SAD:14/03/2006    Si usamos - lo toma como signo 'menos' 
+	
+	if (isNaN(numNie) || numNie < 0) 	
+		{ //La parte númerica contiene alguna letra	
+		alert("N.I.E. Incorrecto\n\nEl N.I.E. introducido es incorrecto, por favor revíselo antes de continuar.");
+		return false;
+		}
+
+	/* si... empieza por Y o por Z ... como máximo puede tener 7 dígitos*/	
+	if (strPerfijo=='Y' || strPerfijo=='Z')
+		{
+		if (numNie.length > 7)
+			{
+			alert(numNie.substr(1,numNie.length-1));
+			
+			if (numNie.substr(0,1) == '0') numNie = numNie.substr(1,numNie.length-1);
+			else
+				{
+				alert("N.I.E. Incorrecto\n\nEl N.I.E. introducido es incorrecto, por favor revíselo antes de continuar.");
+				return false;// tiene 8 díginos una Y o Z y el primer dígito no es un 0
+				}
+			}
+		}
+
+	numNie = HacerTrim(numNie);
+
+		/* 
+		------------------------------------------------------------- 	
+		En teoría, todos deben ser de 7 dígitos, pero en la BBDD puede estar con 8, por lo tanto:
+		- Dejamos el NIE EN 7 POSICIONES
+		- En programa, es donde deberemos BUSCAR el NIE con 7 y 8 dígitos, siempre que empiece por 'X'
+		- Si empieza por 'Y' ó 'Z' --> debe ser de 7 dígitos
+		------------------------------------------------------------- 	
+		*/
+
+	while (numNie.length < 7)  // 04.07.2008
+		{//Completa con 0 por la izquierda (7 DÍGITOS)
+		numNie="0"+numNie;
+		}
+
+				
+	vletras=["T","R","W","A","G","M","Y","F","P","D","X","B","N","J","Z","S","Q","V","H","L","C","K","E","T"];
+	/*
+	NUEVO!!! 04.07.2008
+	Substituyo los pesos de las letras
+		X = 0
+		Y = 1
+		Z = 2	
+	*/
+	var numNie2008="";
+	if (strPerfijo=='X'){ numNie2008 = "0"+ numNie; }
+	if (strPerfijo=='Y'){ numNie2008 = "1"+ numNie; }
+	if (strPerfijo=='Z'){ numNie2008 = "2"+ numNie; }
+
+	valNie = numNie2008 % 23;
+	
+	if (valNie > vletras.length-1)
+		{ //Desborda el array
+		alert("N.I.E. Incorrecto\n\nEl N.I.E. introducido es incorrecto, por favor revíselo antes de continuar.");
+		return false;
+		}
+		
+	letraAux=vletras[valNie];		
+			
+	if (letraNie != letraAux)
+		alert("N.I.E. Incorrecto\n\nEl N.I.E. introducido es incorrecto, por favor revíselo antes de continuar.");
+
+
+	return (letraNie===letraAux)?true:false			
+}// function validaNIE2008 (strNie)   
+
+//----------------------------------------------------------
+
+function HacerTrim(cadena)
+	{
+	for(i=0; i<cadena.length;)
+	{
+		if(cadena.charAt(i)==" ")
+			{
+			cadena=cadena.substring(i+1, cadena.length);
+			}
+		else
+			break;
+	}
+
+	for(i=cadena.length-1; i>=0; i=cadena.length-1)
+	{
+		if(cadena.charAt(i)==" ")
+			{
+			cadena=cadena.substring(0,i);
+			}
+		else
+			break;
+	}
+	return cadena;
+}
+
+//----------------------------------------------
+
+//*********************************************************************
+//			DEPURO LAS FECHAS
+//*********************************************************************
+function depuraFechas(parFecha, pFechaName) 
+	{
+	var pFecha = parFecha.value;
+	var i = 0;
+	var cont = 0;
+	var correcto = true;
+	
+	for (i = 0; i < pFecha.length ; i++) 	// Busco barras ****************
+		if (pFecha.substr(i,1) == '/')
+			cont++;
+			
+	// INICIO DEPURACION DE FORMATO dd/mm/aaaa ************************
+	if (cont == 2) // el formato debe ser dd/mm/aaaa
+		{
+		if (pFecha.length != 10) 
+			correcto = false;
+		
+		// Veo si las barras están bien colocadas en las posiciones 2 y 5
+		if ( ((pFecha.substr(2,1) != '/') || (pFecha.substr(5,1) != '/')) && correcto == true) 			
+			correcto = false;										
+		
+		if (correcto == true)// comprobamos fechas
+			{
+	 		var Anio = pFecha.substr(6,4);
+			var Mes = pFecha.substr(3,2);
+			var Dia = pFecha.substr(0,2);			
+			correcto = esFechaCorrecta(Dia,Mes,Anio, pFechaName);
+			}//if (correcto == true)
+		}
+	//FIN DEPURACION DE FORMATO dd/mm/aaaa ************************
+	else //NO HAY BARRAS
+		{
+		var Mes = pFecha.substr(2,2);
+		var Dia = pFecha.substr(0,2);			
+
+		switch (pFecha.length)
+			{
+			case 6: //formato ddmmaa
+				{
+		 		var Anio = pFecha.substr(4,2);
+  			var Anyo =0;
+				Anyo = Anio / 1;
+		 		Anyo < 56 ? Anyo = Anyo + 2000 : Anyo = Anyo + 1900;
+				Anio = Anyo;
+				pFecha = Dia+"/"+Mes+"/"+Anio;
+				parFecha.value = pFecha; 
+				
+				correcto = esFechaCorrecta(Dia,Mes,Anio, pFechaName);								
+				break;
+				}
+			case 8: //formato ddmmaaaa
+				{
+				var Anio = pFecha.substr(4,4);
+				pFecha = Dia+"/"+Mes+"/"+Anio;
+				parFecha.value = pFecha; 
+				correcto = esFechaCorrecta(Dia,Mes,Anio, pFechaName);
+				break;
+				}			
+			default: 
+				{
+				correcto = false;
+				break;	
+				}			
+			}//switch (pFecha.length)
+		}//else		
+		
+		if (correcto == true) 
+			return true;			
+		else {
+			alert("El formato de la "+pFechaName+" es incorrecto, reviselo.(dd/mm/aaaa).");
+			return false;						
+		}
+	}//function chequea_datos() 
+
+//---------------
+
+//----------------------------------------------------------------------------------------
+function esFechaCorrecta(Dia,Mes,Anio, pFechaName)	
+	{
+	var estado = true;
+
+	if (Anio > 1990)
+		{
+		if ((Mes < 13) && (Mes > 0))
+			{
+			switch (Mes)
+				{
+				case '01':{if (Dia > 31) estado= false; break;}
+				case '02':{if (Dia > 28) estado= false; break;}
+				case '03':{if (Dia > 31) estado= false; break;}
+				case '04':{if (Dia > 30) estado= false; break;}
+				case '05':{if (Dia > 31) estado= false; break;}
+				case '06':{if (Dia > 30) estado= false; break;}
+				case '07':{if (Dia > 31) estado= false; break;}
+				case '08':{if (Dia > 31) estado= false; break;}
+				case '09':{if (Dia > 30) estado= false; break;}
+				case '10':{if (Dia > 31) estado= false; break;}
+				case '11':{if (Dia > 30) estado= false; break;}
+				case '12':{if (Dia > 31) estado= false; break;}
+				default:{estado= false; break;} 
+				}//switch (Mes)
+			}//( (Mes < 13) && (Mes > 0) )												
+			else estado = false;
+		}//(Anio > 1990)
+		else estado = false;
+		
+		if (estado == false)
+			alert("La "+pFechaName+" es incorrecta, revísela.");
+	return estado;
+	}//function esFechaCorrecta(Dia,Mes,Anio,pFechaName)
+	
+//----------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
+
+	function muestraVentana(codigo,literal,dimension){
+		var pag = '';
+		pag = literal.value;
+		switch (codigo) {
+			case 'nie':
+				NewWindow('/icpplus/jsp/capas/'+pag+'.html','nueva','445',dimension,'no');
+				break;
+			case 'rp':
+				NewWindow('/icpplus/jsp/capas/'+pag+'.html','nueva','445',dimension,'no');
+				break;
+			case 'rf':
+				NewWindow('/icpplus/jsp/capas/'+pag+'.html','nueva','450','270','no');
+				break;
+		}
+	}
+	
+	
+		function comprobarAnio(anio,formulario,foco,msgLongitudErronea,msgAnioAbsurdo,msgAnioCuatroCifras) {
+			var a = trim(anio);
+			if (a.length != 4) {
+				//alert("RECUERDE QUE DEBE INTRODUCIR LOS CUATRO DÍGITOS DEL AÑO DE NACIMIENTO");
+				alert(msgLongitudErronea);
+				document.formulario.foco.focus();
+				return;
+			}
+			if (isNaN(anio)) {
+				//alert("RECUERDE QUE DEBE INTRODUCIR LOS CUATRO DÍGITOS DEL AÑO DE NACIMIENTO");
+				//alert("El año de nacimiento ha de ser un número de cuatro cifras");
+				alert(msgAnioCuatroCifras);
+				document.formulario.foco.focus();
+				return;
+			}
+			if ((anio.charAt(0) != 1) && (anio.charAt(0) != "2")) {
+				//alert("EL AÑO DE NACIMIENTO INTRODUCIDO ES ABSURDO");
+				alert(msgAnioAbsurdo);
+				document.formulario.foco.focus();
+				return;		
+			} else {
+			  if (anio.charAt(0) == 1){
+				if (anio.charAt(1) != 9) {
+					//alert("EL AÑO DE NACIMIENTO INTRODUCIDO ES ABSURDO");
+					alert(msgAnioAbsurdo);
+					document.formulario.foco.focus();
+					return;						
+				}
+			  } else {
+				var fechActual = new Date();
+				var anMax = fechActual.getFullYear(); 
+				if (anio > anMax) {
+					//alert("EL AÑO DE NACIMIENTO INTRODUCIDO ES ABSURDO");
+					alert(msgAnioAbsurdo);
+					document.formulario.foco.focus();
+					return;						
+				}
+			  }
+			}	
+		}
+
+// Retorna la dirección de la página de inicio EXTRANINDEX
+	function goIndex()
+		{
+		var url = "";
+		if (gServer=="LOCAL") 
+			url = 'http://localhost:8080/icpplustie/citar?i=es&org=age&t=x&p=x';
+		
+		if (gServer=="MAZINGERZ")
+			url = 'https://10.1.29.248/icpplus/citar?i=es&org=age';
+
+		if (gServer=="AFRODITAA")
+			url = 'https://10.1.29.249/icpplus/citar';
+			
+		if (gServer=="REAL")			
+			url = 'https://sede.administracionespublicas.gob.es/icpplus/citar?i=es&org=age';
+
+
+		return url;
+		}
+
+	function goIndexMSPS()
+		{
+		var url = "";
+		if (gServer=="LOCAL") {
+			//alert("En REAL --> http://www.seap.minhap.gob.es/delegaciones_gobierno/dg_sdg/madrid/dg_madrid.html");
+			url = 'http://localhost:8080/icpplustie/citar?i=es&org=msps';
+			}
+		
+		if (gServer=="MAZINGERZ") {
+			//alert("En REAL --> http://www.seap.minhap.gob.es/delegaciones_gobierno/dg_sdg/madrid/dg_madrid.html");
+			url = 'https://10.1.29.248/icpplus/citar?i=es&org=msps';
+			}
+
+		if (gServer=="AFRODITAA") {
+			//alert("En REAL --> http://www.seap.minhap.gob.es/delegaciones_gobierno/dg_sdg/madrid/dg_madrid.html");
+			url = 'https://10.1.29.249/icpplus/citar?i=es&org=msps';
+			}
+			
+		if (gServer=="REAL")			
+			/*url = "https://sede.mpt.gob.es/icpplus/citar?i=es&org=msps&p=81&t=1001";*/
+			url = "https://sede.administracionespublicas.gob.es/icpplus/citar?i=es&org=msps";
+						
+		return url;
+		}
+
+	function goIndexCOOP()
+		{
+		var url = "";
+		if (gServer=="LOCAL") {
+			url = 'http://localhost:8080/simulacceda';
+			}
+		
+		if (gServer=="MAZINGERZ") {
+			//alert("Falta por definir la página de redirección -->http://www.seap.minhap.gob.es/index.html");
+			url = 'https://sede.administracionespublicas.gob.es/acceda/expedientes/';
+			}
+
+		if (gServer=="AFRODITAA"){
+			url = 'https://sede.administracionespublicas.gob.es/acceda/expedientes/';
+			}
+			
+		if (gServer=="REAL")			
+			/*url = "https://sede.mpt.gob.es/icpplus/citar?i=es&org=msps&p=81&t=1001";*/
+			/*url = 'https://sede.mpt.gob.es/acceda/expedientes/';*/
+			url = 'https://sede.administracionespublicas.gob.es/acceda/procedimientos/index/categoria/31';
+						
+		return url;
+		}
+
+
+	function goIndexGencat_t1()
+		{
+		var url ="http://www.oficinadetreball.gencat.cat/citaprevia/autoritzacions/ciutada"
+		//return url;
+		document.location.href = url;
+		}
+
+	function goIndexGencat_t9()
+		{
+		var url = 'http://www.oficinadetreball.gencat.cat/citaprevia/autoritzacions/empresa';
+		//return url;
+		document.location.href = url;
+		}
+	
+	function goIndexGencat()
+		{
+		var url = 'http://www20.gencat.cat/portal/site/empresaiocupacio/menuitem.32aac87fcae8e050a6740d63b0c0e1a0/?vgnextoid=aed62a8e63448210VgnVCM1000008d0c1e0aRCRD&vgnextchannel=aed62a8e63448210VgnVCM1000008d0c1e0aRCRD&vgnextfmt=default&newLang=es_ES';
+		return url;
+		}
+	
+
+// Función que realiza una mínima validación general a un campo cualquiera de un cierto formulario. Se comprueba que se haya
+// introducido algún valor y que este tenga una mínima longitud, también configurable. Parámetros: formulario -> nombre del formulario
+// del que forma parte el campo a validar (se pasa con formato 'xxxx'); idCampoXValidar -> id del campo que se valida (se pasa con formato 'xxxx');
+// nombreCampo -> nombre que damos al campo y que queremos mostrar en el mensaje de alerta (se pasa con formato 'xxxx');
+// valorCampo -> valor introducido en el campo (típicamente se obtiene con # document.getElementById('xxx').value #);
+// longitudXValidar -> longitud mínima aceptada para el campo que se valida (se pasa la cifra directamente, como número).
+//
+// MAMS. + SAD
+	function validarCampoGeneral(formulario,idCampoXValidar,nombreCampo,valorCampo,longitudXValidar){
+		var x = trim(valorCampo);
+		var strNoOlvide = "No olvide introducir el dato: ";
+		var strEsObliga = "Es un dato obligatorio";
+		var strEsCorto  = "es demasiado corto.\n\nRevíselo por favor. Se trata de un dato obligatorio.";
+		//SAD 15/07/2010 pongo try catch, porque puede que estos campos del Form no están en todas las JSP
+		try{
+			strNoOlvide = document.getElementById("lit_no_olvide_dato").value;
+			strEsObliga = document.getElementById("lit_es_dato_obligatorio").value;
+			strEsCorto  = document.getElementById("alert_demasiado_corto").value;
+			}
+		catch (err){}
+
+		if (x.length < longitudXValidar){
+			if (x.length == 0){
+				alert("AVISO CITA PREVIA\n\n"+strNoOlvide+" '" + nombreCampo + "'. "+strEsObliga+".");
+				document.formulario.idCampoXValidar.focus();
+				document.getElementById("'"+idCampoXValidar+"'").style="background-color:#FF0033; color:#FFFFFF";
+				return;
+			} else {
+				alert("AVISO CITA PREVIA\n\n'" + nombreCampo + "', "+strEsCorto);
+				document.formulario.idCampoXValidar.focus();
+				document.getElementById("'"+idCampoXValidar+"'").style="background-color:#FF0033; color:#FFFFFF";
+				return;
+			}
+		}
+	}
+	
+	function validarCampoGeneralMultiidioma(formulario,idCampoXValidar,mensajeOlvidoCampo,mensajeLongitudCampo,valorCampo,longitudXValidar){
+		var x = trim(valorCampo);
+		if (x.length < longitudXValidar){
+			if (x.length == 0){
+				//alert("AVISO CITA PREVIA\n\nNo olvide introducir el " + nombreCampo + ". Es un dato obligatorio.");
+				alert(mensajeOlvidoCampo);
+				document.formulario.idCampoXValidar.focus();
+				document.getElementById("'"+idCampoXValidar+"'").style="background-color:#FF0033; color:#FFFFFF";
+				return;
+			} else {
+				//alert("AVISO CITA PREVIA\n\nEl " + nombreCampo + " introducido, es demasiado corto.\n\nRevíselo por favor. Se trata de un dato obligatorio");
+				alert(mensajeLongitudCampo);
+				document.formulario.idCampoXValidar.focus();
+				document.getElementById("'"+idCampoXValidar+"'").style="background-color:#FF0033; color:#FFFFFF";
+				return;
+			}
+		}
+	}	
+	
+//Realiza la validación de una fecha en general. "strFecha" es la fecha introducida, "nomFormulario" es el nombre del formulario del que forma parte,
+//"idCampo" es el id del campo de fecha, "anioMinimo" y "anioMaximo" son los años elegidos como límites, los cuales deben introducirse como numeros de
+//cuatro dígitos.
+
+
+
+    function validaFecha(strFecha,nomFormulario,idCampo,anioMinimo,anioMaximo) {
+    	if (strFecha.length == 0) {
+			alert("Por favor, introduzca la fecha requerida.");
+			document.nomFormulario.idCampo.focus();
+			return;    	
+    	} else {
+    		
+    		if (!isDate(strFecha)){
+    			alert("Por favor, introduzca la fecha con el formato indicado a la derecha del campo de escritura");
+    			document.nomFormulario.idCampo.focus();
+    			return;
+    		}
+    		else {
+	    		
+				var fechaLimpia = strFecha.replace("/","");
+				fechaLimpia = fechaLimpia.replace("/","");
+				if (isNaN(fechaLimpia)){
+					alert("Por favor, introduzca la fecha con el formato indicado a la derecha del campo de escritura");
+					document.nomFormulario.idCampo.focus();
+					return;
+				} else {
+					var dia = fechaLimpia.substring(0,2);
+					var mes = fechaLimpia.substring(2,4);
+					var anio = fechaLimpia.substring(4,8);
+					if ((dia <= 0) || (dia > 31)) {
+						alert("El día introducido en el campo de fecha es erróneo");
+						document.nomFormulario.idCampo.focus();
+						return;				
+					}
+					if ((mes <= 0) || (mes > 12)) {
+						alert("El mes introducido en el campo de fecha es erróneo");
+						document.nomFormulario.idCampo.focus();
+						return;				
+					}
+					//Se puede sustituir lo que sigue por el parámetro anioMaximo que le pasamos en la cabecera
+					var fechaActual = new Date();
+					var anioMax = fechaActual.getFullYear() + 20; 
+					if ((anio <= anioMinimo) || (anio > anioMax)) {
+						alert("El año introducido en el campo de fecha es erróneo");
+						document.nomFormulario.idCampo.focus();
+						return;				
+					}
+				}
+			}
+    	} 
+    }
+
+// #####################################################################################################   
+// *****************************************  ICPV7 ****************************************************
+// #####################################################################################################
+
+
+	function enviaServlet(urlServlet) {
+		document.forms[0].action = urlServlet;
+		document.forms[0].submit();
+	}
+
+	
+	function goPresidencia(){
+		document.location.href="http://www.seap.minhap.gob.es";
+	}
+
+	
+	function maximaLongitud(texto,maxlong,mensajeLongMax) {
+	  var tecla, in_value, out_value;
+	
+	  if (texto.value.length > maxlong) {
+	    in_value = texto.value;
+	    out_value = in_value.substring(0,maxlong);
+	    texto.value = out_value;
+		alert(mensajeLongMax);
+	    return false;
+	  }
+	  return true;
+	}
+	
+
+	function vincentVegaConPregunta() {
+		if (confirm("INFORMACIÓN CITA PREVIA\n\nCon esta acción se va a detener el actual proceso de solicitud de cita previa. ¿Está usted seguro?") == true) {
+		
+			//EMPLEANDO SJAX. NOTAS:
+					
+				//Invoca por SJAX --el tercer parámetro de OPEN está a "false" y no implementamos ningún manejador para
+				//"onreadystatechange"-- al ServletVincentVega que limpia la sesión mientras que el escuchador SeñorLobo registra la salida del maromo.				
+
+						
+				
+						var url = "/icpplustie/ServletVincentVega";
+						if (window.XMLHttpRequest) {
+							req = new XMLHttpRequest();
+						} else if (window.ActiveXObject) {
+							req = new ActiveXObject("Microsoft.XMLHTTP");
+						}
+						req.open("POST", url, false);
+						req.send(null);
+						
+						
+
+			//VULGAR SUBMIT: NOS DA EL CONTROL COMPLETO EN EL SERVLET VINCENT VEGA
+						
+					//document.procedimientos...
+					//document.forms[0].action="/icpplus/ServletVincentVega";
+					//document.forms[0].submit();
+					
+			return true;
+						
+		} else return false;
+	}
+	
+	//Invoca por SJAX --el tercer parámetro de OPEN está a "false" y no implementamos ningún manejador para
+	//"onreadystatechange"-- al ServletVincentVega que limpia la sesión mientras que el escuchador SeñorLobo registra la salida en Base de Datos.
+	function vincentVegaSinPregunta() {
+		
+		//EMPLEANDO SJAX. NOTAS:
+				
+			//Invoca por SJAX --el tercer parámetro de OPEN está a "false" y no implementamos ningún manejador para
+			//"onreadystatechange"-- al ServletVincentVega que limpia la sesión mientras que el escuchador SeñorLobo registra la salida del maromo.				
+
+					
+				
+					var url = "/icpplustie/ServletVincentVega";
+					if (window.XMLHttpRequest) {
+						req = new XMLHttpRequest();
+					} else if (window.ActiveXObject) {
+						req = new ActiveXObject("Microsoft.XMLHTTP");
+					}
+					req.open("POST", url, false);
+					req.send(null);
+					
+					entradaICP();
+					
+		//VULGAR SUBMIT: NOS DA EL CONTROL COMPLETO EN EL SERVLET VINCENT VEGA
+
+			//document.procedimientos...
+			//document.forms[0].action="/icpplus/ServletVincentVega";
+			//document.forms[0].submit();		
+		
+	}	
+
+	
+	//Función que detecta si un listillo ha querido cerrar la
+	//ventana pulsando Alt + F4 :
+    //"function Check_Alt_Plus_F4(objEvent)"
+    //Se invoca poniendo un guión como este en la JSP madre:
+    /* 
+		<script type="text/javascript">
+		    document.onkeydown = haPulsadoAltF4;
+		</script>
+    */
+    function haPulsadoAltF4(objEvent) 
+    {
+        try {
+            var sKey;
+            if(window.event) {
+                sKey = window.event.keyCode;
+            }
+            else if(objEvent) {
+                sKey = objEvent.which;
+            }   
+            var objEvent = objEvent || window.event;    
+            if(sKey == 115 && objEvent.altKey) {      
+                //alert("You clicked Alt + F4");
+                //Ha pulsado Alt+F4, por lo que lanzamos lo que queremos:
+                vincentVegaConPregunta(); //por AJAX llama al Servidor para que limpie el desastre.   
+            } 
+        }
+        catch(ex) {
+            alert(ex.toString());
+        }
+    }
+    
+    
+    function haPulsadoCtrl_R(objEvent) 
+    {
+        try {
+            var sKey;
+            if(window.event) {
+                sKey = window.event.keyCode;
+            }
+            else if(objEvent) {
+                sKey = objEvent.which;
+            }   
+            var objEvent = objEvent || window.event;    
+            if(sKey == 82 && objEvent.ctrlKey) {      
+                //alert("You clicked Ctrl + R");
+                //Ha pulsado Ctrl+R, por lo que lanzamos lo que queremos:
+                vincentVegaConPregunta(); //por AJAX llama al Servidor para que limpie el desastre.   
+            } 
+        }
+        catch(ex) {
+            alert(ex.toString());
+        }
+    }    
+    
+	//Función que detecta si un listillo ha querido refrescar la
+	//ventana pulsando F5 :
+    //Se invoca poniendo un guión como este en la JSP madre:
+    /* 
+		<script type="text/javascript">
+		    document.onkeydown = haPulsadoF5;
+		</script>
+    */
+    function haPulsadoF5(objEvent) 
+    {
+        try {
+            var sKey;
+            if(window.event) {
+                sKey = window.event.keyCode;
+            }
+            else if(objEvent) {
+                sKey = objEvent.which;
+            }   
+            var objEvent = objEvent || window.event;    
+            if(sKey == 116) {      
+                //Ha pulsado F5, por lo que lanzamos lo que queremos:
+                vincentVegaConPregunta(); //por AJAX llama al Servidor para que limpie el desastre.   
+            } 
+        }
+        catch(ex) {
+            alert(ex.toString());
+        }
+    }
+    
+    //SÓLO DEBE INVOCARSE DESDE EL beforeunload del body
+    function haPulsadoEnter(objEvent) 
+    {
+        try {
+            var sKey;
+            if(window.event) {
+                sKey = window.event.keyCode;
+            }
+            else if(objEvent) {
+                sKey = objEvent.which;
+            }   
+            var objEvent = objEvent || window.event;    
+            if(sKey == 13) {      
+                //Ha pulsado Enter **para salir de la página**, por lo que lanzamos lo que queremos:
+                //vincentVegaConPregunta(); //por AJAX llama al Servidor para que limpie el desastre.
+                return true;   
+            } else return false;
+        }
+        catch(ex) {
+            alert(ex.toString());
+        }
+    } 
+    
+    //SÓLO DEBE INVOCARSE DESDE EL beforeunload del body
+    function haPulsadoBorrarAtras(objEvent) 
+    {
+        try {
+            var sKey;
+            if(window.event) {
+                sKey = window.event.keyCode;
+            }
+            else if(objEvent) {
+                sKey = objEvent.which;
+            }   
+            var objEvent = objEvent || window.event;    
+            if(sKey == 8) {      
+                //Ha pulsado Borrar/Atrás **para salir de la página regresando a la anterior**, por lo que lanzamos lo que queremos:
+                //vincentVegaConPregunta(); //por AJAX llama al Servidor para que limpie el desastre.   
+                return true;
+            } else return false;
+        }
+        catch(ex) {
+            alert(ex.toString());
+        }
+    }
+    
+    //SÓLO DEBE INVOCARSE DESDE EL beforeunload del body
+    function haPulsadoBotonDerechoRaton(objEvent) 
+    {
+        try {
+            var sKey;
+            if(window.event) {
+                sKey = window.event.keyCode;
+            }
+            else if(objEvent) {
+                sKey = objEvent.which;
+            }   
+            var objEvent = objEvent || window.event;    
+            if(sKey == 93) {      
+                //Ha pulsado el botón derecho del ratón **para recargar la página**, por lo que lanzamos lo que queremos:
+                //vincentVegaConPregunta(); //por AJAX llama al Servidor para que limpie el desastre.   
+                return true;
+            } else return false;
+        }
+        catch(ex) {
+            alert(ex.toString());
+        }
+    }           
+    
+    //Función que deshabilita F4,F5 y F6: de momento no vamos a usarla.
+	function deshabilitaF4F5F6(e) {
+		//alert("Inside function showKeyCode(e)");
+		var keycode =(window.event) ? event.keyCode : e.keyCode;
+
+		//alert ("my keycode:::"+keycode);
+		if (keycode == "116") 
+			{
+			e.cancelBubble = true;
+			e.returnValue = false;
+			//e.stopPropagation works only in Firefox.
+			if (e.stopPropagation) {
+				e.stopPropagation();
+				e.preventDefault();
+				}
+			}
+
+		/*if(window.event && window.event.keyCode == 505)
+			{
+			alert("envio 505 ... return false")
+			return false;
+			
+			}
+			*/
+//			event.keyCode = 0;
+//			event.returnValue = false;
+			return false;
+//		}
+	}
+
+	//Función que detecta si el usuario
+	//está saliendo de la página porque ha pinchado la [X] de navegador o de pestaña, porque ha refrescado con el botón del navegador,
+	//porque ha pulsado el botón de borrado-atrás, porque ha pegado una URL y ha pulsado enter, porque ha pinchado el botón de atrás
+	//del navegador,porque ha desplegado y seleccionado en el historial, porque ha usado esa opción dentro del menú desplegado
+	//con el botón derecho, etc.
+	//Queremos saber en el evento "onbeforeunload" (ya que éste último se usa en Firefox y Explorer y
+	//se ejecuta ANTES de que se descargue la página) si se está descargando	
+	//la página porque se ha cerrado la misma pulsando alguna [X] o, en general, pulsando "algo de arriba",
+	//algo de la parte superior del navegador (como el refresco). (Y un par de botones como "enter" y "borrar-atrás")
+	function haPinchadoArribaYSimilares() {
+
+		//clientY: posY -> VARIABLE GLOBAL QUE ESTABLECEMOS EN CADA PÁGINA Y EN LA QUE GUARDAMOS
+		//EL VALOR DE LA PROPIEDAD clientY (la altura del puntero del ratón medida desde el borde superior hacia abajo).
+		//A su vez en cada página hay un pequeño guión javascript que actualiza continuamente este valor: document.onmousemove = function(evt)
+		
+		if ((posY < 200) || haPulsadoEnter() || haPulsadoBorrarAtras() || haPulsadoBotonDerechoRaton()) {
+			vincentVegaConPregunta(); //por AJAX llama al Servidor para que limpie el desastre.
+		} 
+	}
+	
+	//NOTA: PARA CONTROLAR QUE EL TIPO HA CERRADO LA VENTANA HAY QUE INCLUIR EN TODA JSP VARIAS COSAS:
+	/* 
+
+		1) Estos guioncillos:
+			
+				<script type="text/javascript">
+			    	document.onkeydown = haPulsadoAltF4;
+			    	document.onkeydown = haPulsadoF5;
+					//document.onkeydown = deshabilitaF4F5F6;
+					document.onkeydown = haPulsadoCtrl_R;    	
+				</script>
+			
+		2) en el "body" esto: onbeforeunload="haPinchadoArribaYSimilares()" , para que *antes* de descargar la página el navegador verifique si
+			estamos saliendo por uno de los botones correctos ("aceptar", "volver", etc.) o si lo estamos haciendo "por la parte de arriba", es decir:
+			cerrando la pestaña, cerrando el navegador entero, pulsando refrescar en el bot�n, poniendo el foco en la barra de direcciones y pulsando 
+			"ENTER" o pulsando el bot�n "IR" mientras mantenemos la misma URL actual en la barra de direcciones... etc,etc.
+			
+			NOTA IMPORTANTE: es *imposible* saber *a priori* si estamos realizando una recarga de la p�gina con el bot�n de refresco (hay m�todos barrocos
+			para detectar el resto de posibilidades de refresco, pero para �sta no). Se puede saber si estamos recargando la p�gina 
+			de varias formas distintas, pero siempre *a posteriori*, es decir, cuando ya se ha cargado la nueva p�gina, o detectando teclas como ENTER y F5.
+			Eso significa que ante una recarga de la p�gina el servlet de limpieza de sesi�n ("ServletVincentVega") destruir� la sesi�n igualmente, con posterioridad
+			a lo cual el escuchador Se�orLobo anotar� la traza de salida en base de datos. 
+		
+		3) Este otro gui�n para guardar la posici�n del puntero del rat�n en el momento en que se ejecuta el evento "onbeforeunload":
+		
+				var posX = null;
+				var posY = null;
+					
+				document.onmousemove = function(evt) {
+					if (typeof evt == 'undefined') { //Explorer
+					myEvent = window.event;
+					} else { //Resto del universo
+					myEvent = evt;
+					}
+					posX = myEvent.clientX;
+					posY = myEvent.clientY;
+				}
+				
+	*/
+	
+	//Copia de goIndex para retornar a la direcci�n de la p�gina de inicio EXTRANINDEX
+	//pero llamando siempre al servlet VincentVega.
+	function AlComienzo()
+		{
+			if (vincentVegaConPregunta() == true)
+				entradaICP();
+			else return;
+		}
+		
+	//Copia de goIndex para retornar a la direcci�n de la p�gina de inicio EXTRANINDEX
+	//pero llamando siempre al servlet VincentVega.
+	function AlComienzoSinPreguntas()
+		{
+			vincentVegaSinPregunta();
+			//document.location.href=goIndex();
+		}
+
+
+	function vuelveOpciones(strDesServicio)
+		{
+		//alert("ICP.JS  - vuelveOpciones:"+strDesServicio);
+		//var msj_salir_seguro = document.getElementById('msj_salir_seguro').value;
+		//var alert_gracias = document.getElementById('alert_gracias').value;
+		//document.getElementById("accion").value = "ver_opciones_direct";
+		document.procedimientos.action= "./"+strDesServicio+"?accion=ver_opciones_direct";
+		document.procedimientos.submit();	
+		}
+
+
+	function alMapDeCabeza(){
+			document.location.href='http://www.seap.minhap.gob.es/';
+			//window.close();
+		}
+		
+	function aCoopLocalDeCabeza(){
+		document.location.href='http://www.map.es/enlaces/entidades_locales.html';
+	}
+	
+	function AlComienzoAcceda()
+		{
+			if (vincentVegaConPregunta() == true)
+				aCoopLocalDeCabeza();
+			else return;
+		}		
+		
+	//MAMS 19.11.09: funci�n SJAX (ajax s�ncrono) que nos sirve para comprobar un captcha sin tener que hacer una petici�n completa.
+	// CGR 04.04.2016 sobrecargada para que si recibe 2 parametros, valide el
+	// captcha contra Google Recaptcha
+	function validaCapturador(clave, reto) {
+		
+		var peticion;
+		
+		// funcion antigua
+		if (arguments.length = 0) {
+			// funcion antigua
+			var url = "/icpplus/sjaxCaptcha?clv=" + clave;
+		} else {
+			// funcion nueva
+			var url = "/icpplus/sjaxCaptcha?clv=" + clave + '&chl=' + reto;
+		}
+		
+		if (window.XMLHttpRequest) {
+			peticion = new XMLHttpRequest();
+		} else if (window.ActiveXObject) {
+			peticion = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+			
+		/* IMPORTANTE: ESTO ES **SJAX**, NO AJAX: AL PONER
+		EL TERCER PAR�METRO A 'FALSE' HACEMOS QUE LA LLAMADA SEA S�NCRONA.
+		
+			peticion.open("POST", url, false); --> SJAX
+			peticion.open("POST", url, true); --> AJAX		*/
+			
+		peticion.open("GET", url, false);
+		peticion.send(null);
+		
+		if (peticion.responseText=="CORRECTO") {
+			return true;
+		} else {
+			if (peticion.responseText=="COD_CAPTCHA_INCORRECTO")
+				return false;
+			else { 
+				alert(" * * * ERROR GRAVE EN LA COMUNICACIÓN CON EL SERVIDOR * * * ");
+				alert("El servidor contestó: " + peticion.responseText);
+				return false;
+			}
+		} 
+	}
+	
+	function entradaICP()
+		{
+		var strUrl ="";
+		if (gServer=="LOCAL") 
+			strUrl = "http://localhost:8080/icpplustie/citar?i=es&org=age&t=x&p=x";
+			
+		if (gServer=="MAZINGERZ")
+			strUrl = "https://10.1.29.248/icpplus/citar?i=es&org=age&t=x&p=x";
+		
+		if (gServer=="REAL")			
+			strUrl = "https://sede.administracionespublicas.gob.es/icpplus/";
+
+		document.location = strUrl;	
+		}//entradaICP
+	
+	function entradaICP(org) {
+		
+		var strUrl ="";
+		
+		if (org=="GENCAT"){
+			strUrl = "http://www20.gencat.cat/portal/site/empresaiocupacio/menuitem.32aac87fcae8e050a6740d63b0c0e1a0/?vgnextoid=aed62a8e63448210VgnVCM1000008d0c1e0aRCRD&vgnextchannel=aed62a8e63448210VgnVCM1000008d0c1e0aRCRD&vgnextfmt=default&newLang=es_ES";
+		}
+		else if (org=="MSPS"){
+			if (gServer=="LOCAL") 
+				strUrl = "http://localhost:8080/icpplustie/citar?i=es&org=msps";
+			
+			if (gServer=="MAZINGERZ")
+				strUrl = "https://10.1.29.248/icpplus/citar?i=es&org=msps";
+			
+			if (gServer=="REAL")			
+				strUrl = "https://sede.administracionespublicas.gob.es/icpplus/citar?i=es&org=msps";
+		}
+		else {
+			if (gServer=="LOCAL") 
+				strUrl = "http://localhost:8080/icpplustie/citar?i=es&org=age&t=x&p=x";
+			
+			if (gServer=="MAZINGERZ")
+				strUrl = "https://10.1.29.248/icpplus/citar?i=es&org=age&t=x&p=x";
+			
+			
+			if (gServer=="REAL")			
+				strUrl = "https://sede.administracionespublicas.gob.es/icpplus/";
+			
+		}//entradaICP
+		document.location = strUrl;
+	}
+
+
+	function goDecide(org)
+		{
+		if (org=="AGE") {
+			alert("Ministerio de Hacienda y Administraciones Públicas\n\nGracias por usar el servico de Internet Cita Previa.\n ");
+			document.location.href=goIndex();
+			}
+		else if(org=="GENCAT") {
+			alert("Ministerio de Hacienda y Administraciones Públicas-Generalitat de Catalunya\n\nGracias por usar el servico de Internet Cita Previa.\n ");
+			document.location.href=goIndexGencat();
+			}
+		else if(org=="MSPS") {
+			alert("Ministerio de Hacienda y Administraciones Públicas\n\nGracias por usar el servico de Internet Cita Previa.\n ");
+			document.location.href=goIndexMSPS();
+			}
+		else if(org=="COOP") {
+			alert("Ministerio de Hacienda y Administraciones Públicas\n\nGracias por usar el servico de Internet Cita Previa.\n ");
+			document.location.href=goIndexCOOP();
+			}
+		}
+
+
+	function LimpiaReservasAjax(opcion) 
+		{
+		var url = "/icpplustie/SrLoboAJAX?opcion="+opcion;
+		//alert("url:"+url);
+		if (window.XMLHttpRequest) {
+			req = new XMLHttpRequest();
+			} 
+		else if (window.ActiveXObject) {
+			req = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+		req.open("POST", url, false);
+		req.send(null);							
+		}
+
+
+	function getColor(objeto)
+		{
+		var color=objeto.style.backgroundColor;
+		if (color.substring(0, 1)!="#")
+			{
+			color=color.replace("rgb(","");
+			color=color.replace(")","");
+			var partes=color.split(",")
+			var parte1=partes[0].replace(/^\s*|\s*$/g,"");
+			var parte2=partes[1].replace(/^\s*|\s*$/g,"");
+			var parte3=partes[2].replace(/^\s*|\s*$/g,"");
+			a= "0123456789ABCDEF".charAt(parseInt(parte1 / 16)) + "0123456789ABCDEF".charAt(parseInt(parte1% 16));
+			b= "0123456789ABCDEF".charAt(parseInt(parte2 / 16)) + "0123456789ABCDEF".charAt(parseInt(parte2% 16));
+			c= "0123456789ABCDEF".charAt(parseInt(parte3 / 16)) + "0123456789ABCDEF".charAt(parseInt(parte3% 16));
+			return color="#"+a+b+c;
+			}
+		else return color.toUpperCase();
+		} 
+
+
+	function validarSesion(prov)
+		{
+		if (prov == "null") {
+			alert("Información de Cita Previa\n---------------------------------\n\nPor seguridad, se le va a redirigir a la pantalla principal de acceso a cita previa.\n\n\nMinisterio de Hacienda y Administraciones Públicas.");
+			entradaICP();
+			}
+		}
+	function goAc_Entrada()
+		{		
+		document.info.action= "./citar?accion=ac_entrada";
+		document.info.submit();	
+		}
+
+	function goAc_salir_portada(org)
+		{		
+		//org="AGE";//Quitar para la version 2.0.1
+		org=org.toUpperCase();
+		//alert("goAc_salir_portada org="+org);
+		if (org=="AGE")
+			{
+			document.procedimientos.action= "./controlador?accion=AC_SALIR_PORTADA";
+			document.procedimientos.submit();	
+			}
+		else goDecide(org);
+		}
+
+	function goAc_opc_direct()
+		{
+		//alert("goAc_opc_direct");
+		document.procedimientos.action= "./controlador?accion=AC_OPC_DIRECT";
+		document.procedimientos.submit();	
+		}
+
+	function goAc_Anulacceda()
+		{
+		//alert("goAc_opc_direct");
+		document.procedimientos.action= "./anulacceda";
+		document.procedimientos.submit();	
+		}
+		
+	function goAc_anularreserva()
+		{
+		//alert("goAc_anularreserva ---------");
+		document.procedimientos.action= "./controlador?accion=AC_ANULARRESERVA";
+		document.procedimientos.submit();	
+		}
+		
+	//Copia de goIndex para retornar a la direcci�n de la p�gina de inicio EXTRANINDEX
+	//pero llamando siempre al servlet VincentVega.
+	function goPortada(org)
+		{
+			if (vincentVegaConPregunta() == true)
+				entradaICP(org);
+			else return;
+		}		
+
+		
+function verificaTextoIdCitado(strIdCitado)
+	{
+	var strAux = "";
+	
+	if (strIdCitado != ''){
+	
+		for ( x=0; x < strIdCitado.length; x++) 
+			{
+			if ((strIdCitado.charAt(x) != ' ') && 
+			    (strIdCitado.charAt(x) != ',') && 
+				(strIdCitado.charAt(x) != '.') &&
+				(strIdCitado.charAt(x) != '-') &&
+				(strIdCitado.charAt(x) != '_') &&
+				(strIdCitado.charAt(x) != '*') &&
+				(strIdCitado.charAt(x) != '/') &&
+				(strIdCitado.charAt(x) != '+') &&
+				(strIdCitado.charAt(x) != ';') &&
+				(strIdCitado.charAt(x) != '|') &&
+				(strIdCitado.charAt(x) != '$') &&
+				(strIdCitado.charAt(x) != '?') &&
+				(strIdCitado.charAt(x) != ':') &&
+				(strIdCitado.charAt(x) != '=') &&
+				(strIdCitado.charAt(x) != '(') &&
+				(strIdCitado.charAt(x) != ')') &&
+				(strIdCitado.charAt(x) != '%') &&
+				(strIdCitado.charAt(x) != '�') &&
+				(strIdCitado.charAt(x) != '`') &&
+				(strIdCitado.charAt(x) != '�') &&
+				(strIdCitado.charAt(x) != '^') )
+				{
+				strAux += strIdCitado.charAt(x);
+				}
+			  else  
+				return false;					
+			}
+	}
+	else {
+		return false;
+	}
+	return true;
+	}
+
+	
+function esNumero(valor){
+	if (!/^([0-9])*$/.test(valor)) return false
+	else return true;
+	}
+	
+	
+		function SAjaxGeneral(urlServletDestino,metodoEnvio,cadenaValores,sincronia,funcionManejadora,contenedorXHTML){
+			
+			/** Esta es una funcion lo mas general posible para realizar tanto peticiones SJAX como AJAX.
+			   Parametros:
+			   	
+			   		� urlServletDestino -> url del servlet al que hacemos la peticion. 
+					� metodoEnvio -> metodo o "verbo" de la peticion. **Solo aceptamos GET y POST (no PUT ni DELETE)**. Usamos por defecto POST si no se indica nada o se indica mal.
+					� cadenaValores -> ristra de pares "parametro=valor". Formato que debe tener (ej.): "id=1000&lugar=casa&tipo=A&..." 
+									   Los valores deben obtenerse asi (ej.):
+									   
+									   				var fecha = document.getElementById("fecha_nacimiento");
+									   				cadenaValores += "&" + encodeURIComponent(fecha.value);
+									   	
+					� sincronia -> "S" o "A", dependiendo de si queremos una peticion sincrona (SJAX) o asincrona (AJAX).
+					� funcionManejadora -> pasamos como parametro la funcion "handler"  o manejadora con la que vamos a manejar la respuesta, tanto si usamos AJAX como SJAX.
+										   **Si no se pasa nada, se usa una funcion por defecto**
+										   **Esta funcion debera tener en cuenta los diferentes formatos posibles de la respuesta**: 
+					
+						application/x-wwwform-urlencoded:	el cuerpo de la peticion es una ristra de pares "clave=valor". Solo tiene sentido cuando
+														   	existe el cuerpo de la peticion, es decir, en las peticiones POST. En GET no hay cuerpo.
+														   	Solo se usa en la peticion.
+																				
+						text/xml,application/xml:			el cuerpo es un documento XML. Se usa tanto en la respuesta como en la peticion. Hay
+															que especificarlo explicitamente en la respuesta si queremos luego hacer uso de 
+															la propiedad "XHR.responseXML" en el lado del cliente.
+						
+						text/plain:							el cuerpo es texto plano sin formato.
+						
+						text/html, text/xhtml: 				se usa en las respuestas del servidor. indica que se estan enviando fragmentos XHTML (o paginas enteras).
+
+						text/javascript: 					se usa en las respuestas para indicar que se estan enviando archivos "js", funciones "javascript" o fragmentos de este lenguaje.
+														
+						image/png, image/jpeg, image/gif:	el cuerpo es una imagen binaria enviada desde el servidor.				
+					
+					
+					� contenedorXHTML -> "id" del elemento XHTML en el que vamos a introducir la respuesta del servidor (**solo se usa en peticiones asincronas**).
+					
+					Ejemplo de peticion asincrona que no asigna funcion manejadora (usa la que hay por defecto):
+					
+						SAjaxGeneral("/icpplus/Captcha.jpg","GET",null,"A",null,"contenedorCapturador");
+						
+					Ejemplo de peticion sincrona que asigna una funcion manejadora muy simple (que no hace nada con la respuesta del servidor):
+					
+								function manejarCapturador() {
+									return true;
+								}
+								
+								SAjaxGeneral("/icpplus/Captcha.jpg","GET",null,"S",manejarCapturador,"contenedorCapturador");
+					
+			*/
+			
+			//var READY_STATE_COMPLETE = 4;
+			//var STATUS_OK = 200;
+			var peticion_http = null;
+			
+			//Funcion que crea el objeto peticion.
+			function inicializa_xhr() {
+				if(window.XMLHttpRequest) {
+					return new XMLHttpRequest();
+				} else if(window.ActiveXObject) {
+					return new ActiveXObject("Microsoft.XMLHTTP");
+				}
+			}
+			
+			//Funcion por defecto para procesar la respuesta en AJAX. Asume que se le devuelve texto XHTML que debe introducir en la pagina.
+			function procesaRespuestaAsincrona() {
+				//alert("peticion_http.getResponseHeader('Content-Type'): " + peticion_http.getResponseHeader("Content-Type"));
+				if (peticion_http.readyState == 4) {
+					if (peticion_http.status == 200) {
+						document.getElementById(contenedorXHTML).innerHTML = peticion_http.responseText;
+					} else {
+						alert("Error en el servidor. El servidor contesto: " + peticion_http.status);	
+					}
+				}
+			}
+			
+			//Funcion por defecto para procesar la respuesta en SJAX. Asume que el servidor realiza un cierta accion, la que sea,
+			//y devuelve "CORRECTO" en caso de que todo haya ido bien y "ERROR" en caso contrario.
+			function procesaRespuestaSincrona() {
+				if (peticion.responseText=="CORRECTO") {
+					return true;
+				} else {
+					if (peticion.responseText=="ERROR")
+						return false;
+					else { 
+						alert(" * * * ERROR GRAVE EN LA COMUNICACIÓN CON EL SERVIDOR * * * ");
+						alert("El servidor contestó: " + peticion.responseText);
+						return false;
+					}
+				}
+			}	
+			
+			//Controlamos que en la llamada a esta funcion se hayan pasado los parametros minimos que deben pasarse...
+			
+			if (urlServletDestino == null || sincronia == null || ((sincronia == "A") && (contenedorXHTML == null))) {
+			
+				alert("Los parametros esenciales se han especificado incorrectamente. No se puede invocar a 'SAjaxGeneral'.");
+				return false;
+				
+			} else {
+			
+				if (typeof(urlServletDestino) == "undefined" || typeof(sincronia) == "undefined" || ((sincronia == "A") && (typeof(contenedorXHTML) == "undefined"))) {
+				
+					alert("Los parametros esenciales se han especificado incorrectamente. No se puede invocar a 'SAjaxGeneral'.");
+					return false;
+					
+				} else {
+					
+					//Hacemos "trim" sobre los parametros minimos...
+					urlServletDestino = urlServletDestino.replace(/^\s*|\s*$/g,"");
+					sincronia = sincronia.replace(/^\s*|\s*$/g,"");
+					
+					if (sincronia == "A") contenedorXHTML = contenedorXHTML.replace(/^\s*|\s*$/g,"");
+					
+					if (urlServletDestino == "" || sincronia == "" || (sincronia == "A" && contenedorXHTML == "")) {
+					
+						alert("Los parametros esenciales se han especificado incorrectamente. No se puede invocar a 'SAjaxGeneral'.");
+						return false;
+					
+					} else {
+					
+						//Todo bien. Empezamos.
+						
+						peticion_http = inicializa_xhr();
+						
+						if (peticion_http) {
+						
+							if (sincronia != "S" && sincronia != "A") {
+							
+								alert("Es necesario especificar la sincronia con 'S' o 'A'.");
+								return false;
+								
+							} else {
+							
+								if (sincronia == "A") {
+								
+									//Asincronamente... 
+
+									if (funcionManejadora != null) {
+										peticion_http.onreadystatechange = funcionManejadora;
+									} else {
+										peticion_http.onreadystatechange = procesaRespuestaAsincrona;
+									}	
+									
+									if (metodoEnvio != null && (metodoEnvio == "GET" || metodoEnvio == "get")) {
+										//Enviamos por GET...
+										peticion_http.open("GET",urlServletDestino, true);
+									} else {
+										//Enviamos por POST...
+										peticion_http.open("POST",urlServletDestino, true);
+										peticion_http.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+									}
+									
+									if (cadenaValores == null)
+										peticion_http.send(null);
+									else peticion_http.send(cadenaValores.value); 
+																	
+								} else {
+								
+									//Sincronamente...
+									
+									if (metodoEnvio != null && (metodoEnvio == "GET" || metodoEnvio == "get")) {
+										//Enviamos por GET...
+										peticion_http.open("GET",urlServletDestino, false);
+									} else {
+										//Enviamos por POST...
+										peticion_http.open("POST",urlServletDestino, false);
+										peticion_http.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+									}
+																
+									if (cadenaValores == null)
+										peticion_http.send(null);
+									else peticion_http.send(cadenaValores.value);
+									 
+									if (funcionManejadora != null) {
+										//alert("funcionManejadora:" + funcionManejadora);
+										funcionManejadora();
+									} else {
+										procesaRespuestaSincrona();
+									}	
+																						
+								}
+								
+							}
+							
+						}						
+					
+					} 			
+							
+				}
+			
+			}
+			
+		}
+		
+		//Codigo para controlar en todo momento la posicion del puntero del raton... NO DESCOMENTAR AQUI.
+		/*
+				var posX = null;
+				var posY = null;
+					
+				document.onmousemove = function(evt) {
+					if (typeof evt == 'undefined') { //Explorer
+					myEvent = window.event;
+					} else { //Resto del universo
+					myEvent = evt;
+					}
+					posX = myEvent.clientX;
+					posY = myEvent.clientY;
+				}		
+		*/		
+		
+		
+	function esEmailCorrecto(valor) {
+	
+//  		if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3,4})+$/.test(valor))
+		
+		if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(valor))
+			{
+			//alert("<<<< La direcci�n de email " + valor + " es correcta.");
+		   	return true;
+			}
+		else {
+			//alert("zzzzz La direcci�n de email es incorrecta.");
+			return false;  			
+			}
+		}//
+	
+function isDate(date){
+	var regExp= /^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((19|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((19|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((19|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$/g;
+	if(!regExp.test(date)){
+		return false;
+	}
+	else {
+		return true;
+	}
+}
+
+function goPortadaInicializando(url)
+{		
+	document.forms[0].action= "/icpplustie/controlador?accion=AC_SALIR_PORTADA";
+	document.forms[0].submit();	
+	document.location.href = url;
+}
+
+function goPortadaInicializando2(url, ambito)
+{		
+	if (ambito == ('AGE')) {
+		document.location.href = "/icpplus/index.html";
+	}
+	else {
+		document.forms[0].action= "/icpplustie/controlador?accion=AC_SALIR_PORTADA";
+		document.forms[0].submit();	
+		document.location.href = url;
+	}
+}

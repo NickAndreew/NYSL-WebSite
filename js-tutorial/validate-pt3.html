@@ -1,0 +1,207 @@
+<!doctype HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
+    <title>Validating Forms with JavaScript - Part 3: Using Patterns</title>
+  <link type="text/css" rel="stylesheet" href="validate.css">
+</head>
+<body class="part3">
+
+<div id="taskBlock">
+	<ul>
+
+            <li id="task1">
+            	<span>1.</span>   
+                <a class="taskLink" href="validate-pt1.html">Catching Errors</a>
+            </li>
+        
+            <li id="task2">
+		<span>2.</span>   
+                <a class="taskLink" href="validate-pt2.html">Helping the User</a>
+            </li>
+
+            <li id="task3">
+		<span>3.</span>   
+                <a class="taskLink" href="validate-pt3.html">Using Patterns</a>
+            </li>
+        
+    </ul>
+</div>
+
+<div id="fixedHeader"></div>
+<div id="subNavColor"></div>
+
+  <form id="sample" name="sample" action="show_data.html" method="GET">
+    <div><label for="user">User: </label><input id="user" name="user" type="text"></div>
+    <div><label for="age">Age: </label><input name="age" type="text"></div>
+    <div><input type="submit" value="Submit Form"></div>
+  </form>
+
+  <div id="main-content">
+      <h1 id="courseName">Validating Forms with JavaScript - Part 3: Using Patterns</h1>
+    
+    <h2>Our weak validator</h2>
+    
+      <p>If you haven't done <a href="validate-pt1.html">Part 1: Catching Errors</a>
+      and <a href="validate-pt2.html">Part 2: Helping the User</a>, do so
+    first. This page depends on code written for those tutorials.</p>
+    
+    <p>If you have done Part 2, there is something that needs fixing:
+    The code lets a lot of
+    bad data get through. For example, you can write "really old" in the
+    age field, even though the web server probably wants a number. Even worse,
+    try just putting some spaces in each field. Our current code will think there's something
+    there, because <tt>"&nbsp;&nbsp;&nbsp;"</tt> is not equal to <tt>""</tt>, but of
+    course there's no useful data there.</p>
+  
+    <h2>Just a regular guy</h2>
+    
+    <p>The problem with our code is that it just checks for the empty string,
+      but what we really want to check for is:</p>
+    
+    <ul>
+      <li>The user name has actual letters in it</li>
+      <li>The age is a number</li>
+    </ul>
+    
+    <p>Fortunately JavaScript provides <b>regular
+    expressions</b> that let you test to see if a string matches a pattern
+    that requires one or more letters, or all numbers. Unfortunately,
+    while regular expressions start off simple, they can rapidly get
+    complicated. Hence, <a href="http://regex.info/blog/2006-09-15/247">this well known quote</a> among programmers:</p>
+    
+    <blockquote>Some people, when confronted with a problem, think
+    "I know, I'll use regular expressions." Now they have two problems.
+    </blockquote>
+    
+    <h2>This is just a test</h2>
+    
+    <p>Let's start with how to use regular expressions in
+    JavaScript. Open your developer Console. Type the
+    following expressions and see what's returned.</p>
+    
+    <pre class="code-example">/bcd/.test("abcde")</pre>
+    
+    <pre class="code-example">/bcd/.test("abc")</pre>
+    
+    <pre class="code-example">/bcd/.test("")</pre>
+    
+    <p>The form <tt>/bcd/</tt> creates a regular expression object. 
+    A regular expression object has a <b>method</b> called <tt>test</tt>. If you
+    call <tt>test</tt> with a string, it will return true if any part
+    of the string matches the sequence <tt>bcd</tt>.</p>
+    
+    <p>There are other methods, but <tt>test</tt> is all we'll need
+    for our simple needs.</p>
+    
+    <h2>Matchmaker, matchmaker, make me a match</h2>
+    
+    <p>There are better ways to check for <tt>bcd</tt> than
+    <tt>/bcd/.test(...)</tt>. The power of regular expressions
+    comes when we use
+    <b>metacharacters</b>. Metacharacters are matched using special rules.
+    A few metacharacters are simple single characters, like <tt>+</tt>
+    and <tt>*</tt>. Others are two or more characters,
+    such as <tt>\d</tt>.</p>
+    
+    <p>Here are just a few of the metacharacters, and what they mean for matching.
+    These descriptions are over-simplified in many cases. (More of these symbols 
+    are easily found online. Look for <a href="http://www.rexegg.com/regex-quickstart.html">
+    regex cheatsheets</a> or tutorials.)
+    NOTE: Case matters. <tt>\s</tt> and <tt>\S</tt> mean the opposite things!</p>
+    
+    <ul>
+      <li><tt>\d</tt>: matches any digit, i.e.,one of the characters 0 through 9</li>
+      <li><tt>\s</tt>: matches a space character</li>
+      <li><tt>\S</tt>: matches any non-space character</li>
+      <li><tt>[A-Za-z]</tt>: matches any uppercase or lowercase letter</li>
+      <li><tt>^</tt>: marks the start of a string, so <tt>^abc</tt> will look for <tt>abc</tt> at the
+      start of a string.</li>
+      <li><tt>$</tt>: marks the end of a string, so <tt>abc$</tt> will look for <tt>abc</tt> at the 
+      end of a string. (<tt>^abc$</tt> would look for <tt>abc</tt> to fill the string.) </li>
+      <li><tt>?</tt>: a character followed by a question matches zero or one
+      occurrences of the character</li>
+      <li><tt>*</tt>: a character followed by an asterisk will match zero or
+      more occurrences of the character</li>
+      <li><tt>+</tt>: a character followed by a plus will match one or
+      more occurrences of the character.</li>
+    </ul>
+
+    <p>Example: <tt>^[A-Za-z]+$</tt> matches any string that 
+    starts with one or more letters and then ends. <tt>D</tt> or <tt>cat</tt> or <tt>fIsH</tt> 
+    are possible matches, as long as there is nothing else (including spaces)
+    before or after the string, but <tt>1</tt> or <tt>Dog 3</tt> or <tt>Egad!</tt> 
+    would not match.</p>
+    
+    <p>Now, let's consider what we need.</p>
+    
+    <ul>
+      <li>The user name has actual letters in it</li>
+      <li>The age is a non-negative integer</li>
+    </ul>
+    
+    <p>What regular expression would match only valid
+    user names? It should not match things like "   ", "12a" or "__".
+    It should match things like "John" , "  Mary", and "Sam Spade".</p>
+    
+    <p>What regular expression would match valid ages?
+    It should not match "  ", "12a", "-8", or "really old".
+    It should match "12", "  4", "0", and "108".</p>
+
+    <p>HINT: In both cases, you want to allow spaces, but only spaces, before and after 
+    the actual data:</p>
+
+    <ul>
+      <li>What pattern would say "zero or more spaces at the start, then 
+    one or more letters, then zero or more spaces, then zero or more letters, then zero 
+    or more spaces at the end"?</li>
+      <li>What pattern would say "zero or more spaces at the
+    start, then one or more digits, then zero or more spaces at the end?"</li>
+    </ul>
+    
+    <p>Use the Console to test out your pattern ideas with
+     /your_pattern/.test(some_test_string) Does your user name pattern give
+     <tt>true</tt> for things it should match and <tt>false</tt> for things it shouldn't? Does your
+     age pattern work too?</p>
+    
+    <h2>Bringing it all home</h2>
+    
+    <p>When you have working patterns, your job is just about done.
+    Simply change your field validation functions to use the
+    regular expressions you've developed. I.e. change <tt>validateUser</tt>
+    like this:</p>
+    
+    <pre class="code-example">function validateUser(userField) {
+  if (/.../.test(userField.value)) {
+    return "";
+  }
+  else {
+    return "The user field needs a valid name with letters.\n";
+  }
+}</pre>
+
+    <p>Then, replace the <tt>...</tt> with your user pattern. The rest
+    of the code is unchanged.</p>
+    
+    <p>Do the same thing with the age validator. Then test! Try
+    putting spaces in both fields. Try putting a number in the name
+    field and a name in the age field. Try putting good data in both fields.</p>
+    
+    
+    
+    <h2>Review</h2>
+    
+    <p>One big thing this time.</p>
+    
+    <ul>
+      <li><b>regular expressions</b>: A regular expression is an
+      object that can match many different strings fitting
+      a prescribed pattern.</li>
+    </ul>
+     
+  </div>
+<div class="authorBio"><img src="Chris-Riesbeck.jpg" width="80" alt="Chris Riesbeck Photo" class="authorPhoto" /><div class="authorInfo"><h2>About the Author</h2>Chris Riesbeck holds a Ph.D. and M.A. in Computer Science from Stanford University and was the Acting Director for the Center for Technology and Social Behavior at Northwestern University. Currently, Chris is an Associate Professor in the Department of Electrical Engineering and Computer Science at Northwestern University.</div>
+</div>
+
+</body>
+</html>

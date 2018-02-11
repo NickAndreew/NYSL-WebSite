@@ -1,0 +1,30 @@
+
+BODY { font-size: 10pt }
+
+/*.no_imp {BACKGROUND-COLOR: #FFFFFF ; BORDER-BOTTOM: #000000 0px solid; display: none;}*/
+.no_imp {display: none;}
+.si_imp {display: block;}
+
+.si_impJustificante {display: block;
+	FONT-WEIGHT: bold; 
+	FONT-SIZE: 12px;
+	FONT-FAMILY: verdana, Geneva, Arial, Helvetica, sans-serif; 
+	COLOR: #000000;  
+	BACKGROUND-COLOR: #fafafa}
+
+.no_impJustificante {display: none;
+	FONT-WEIGHT: bold; 
+	FONT-SIZE: 12px;
+	FONT-FAMILY: verdana, Geneva, Arial, Helvetica, sans-serif; 
+	COLOR: #000000;  
+	BACKGROUND-COLOR: #fafafa}
+
+.filaclara_3 {	
+	BORDER: #000000 1px solid;
+	BORDER-RIGHT: #e5e5e5 0px solid;
+	FONT-SIZE: 10px; COLOR: #000000; FONT-FAMILY: verdana, Geneva, Arial, Helvetica, sans-serif; BACKGROUND-COLOR: #fafafa
+}
+
+.tablasinfondo  { BORDER: #000000 1px solid; BACKGROUND-COLOR: #ffffff}
+.tablasinfondo2 { BORDER: #000000 0px solid; BACKGROUND-COLOR: #ffffff}
+.no_imp_tablasinfondo { display: none; BORDER: #000000 1px solid; BACKGROUND-COLOR: #ffffff}

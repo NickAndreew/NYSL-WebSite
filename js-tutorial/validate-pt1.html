@@ -1,0 +1,389 @@
+<!doctype HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
+    <title>Validating Forms with JavaScript - Part 1: Catching Errors</title>
+  <link type="text/css" rel="stylesheet" href="validate.css">
+</head>
+<body class="part1">
+
+<div id="taskBlock">
+	<ul>
+
+            <li id="task1">
+            	<span>1.</span>   
+                <a class="taskLink" href="validate-pt1.html">Catching Errors</a>
+            </li>
+        
+            <li id="task2">
+		<span>2.</span>   
+                <a class="taskLink" href="validate-pt2.html">Helping the User</a>
+            </li>
+
+            <li id="task3">
+		<span>3.</span>   
+                <a class="taskLink" href="validate-pt3.html">Using Patterns</a>
+            </li>
+        
+    </ul>
+</div>
+
+<div id="fixedHeader"></div>
+<div id="subNavColor"></div>
+
+
+    
+    <form id="sample" name="sample" action="show_data.html" method="GET">
+        <div><label for="user">User: </label><input id="user" name="user" type="text"></div>
+        <div><label for="age">Age: </label><input name="age" type="text"></div>
+        <div><input type="submit" value="Submit Form"></div>
+    </form>
+
+
+
+  <div id="main-content">
+      <h1 id="courseName">Validating Forms with JavaScript - Part 1: Catching Errors</h1>
+      
+      <h2>Getting set up</h2>
+      
+      <p>This is a learn-by-doing tutorial. You'll need to view this page with
+      a browser that has a JavaScript console window. Pretty much every browser
+      can do this:</p>
+      
+      <ul>
+          <li>Linux/MacOS/Windows: Firefox <a href="https://getfirebug.com/">with Firebug installed</a></li>
+          <li>Linux/MacOS/Windows: Google Chrome <a href="https://developer.chrome.com/devtools/docs/console">with Developer tools enabled</a></li>
+          <li>Windows: Internet Explorer 8 -- hit function key F12 to open</li>
+          <li>Windows: Internet Explorer 9 <a href="http://www.microsoft.com/en-us/download/details.aspx?id=18359">with the Developer Toolbar installed</a></li>
+          <li>MacOS/Windows: Safari <a href="http://wickedlysmart.com/hfjsconsole/">with WebDeveloper enabled</a></li>
+          <li>Linux/MacOS/Windows: Opera <a href="http://www.opera.com/dragonfly/documentation/">with Dragonfly</a></li>
+      </ul>
+      
+      <p>Follow the instructions appropriate to your browser to open the JavaScript Console window.
+      Keep that window open throughout this tutorial. Test it out by entering
+      (typing and hitting enter at the end) the following line of code:</p>
+      
+      <pre class="code-example">document.forms.sample</pre>
+      
+      <p>Did you see something that looked like an HTML <tt>form</tt> element?
+      Then you're all set. What you just did was run JavaScript
+      code to get the form named "sample" on the current document, i.e.,
+      this HTML page.
+      It's the form you see on the right.</p>
+      
+      <p>Now try this, type something into the <b>User</b> field. 
+      Now enter the code below in the Console window. TIP: Save typing --
+      use the up arrow key to get back lines you typed before. You can
+      then edit and re-enter them. Neat!</p>
+      
+      <pre class="code-example">document.forms.sample.user.value</pre>
+      
+      <p>This says "get the value of the input field named "user"
+      in the form named "sample."</p>
+      
+      <h2>Review</h2>
+      
+      <p>You've already seen some important concepts in JavaScript.</p>
+      
+      <ul>
+          <li><b>strings</b>: The value in the user field is a string. A string
+              is a sequence of characters inside quotation marks. All form field values
+              are strings.</li>
+          <li><b>variables</b>: <tt>document</tt> is a variable that the browser
+              sets to hold the current HTML page. A variable is a named location.
+              Variable names must start with a letter, and contain only letters, digits,
+              and the underscore.</li>
+          <li><b>objects</b>: Objects are chunks of data. A string is an object,
+              and the value stored in <tt>document</tt> is an object.</li>
+          <li><b>properties</b>: Objects can have zero or more properties. A
+              property is a name and a value. <tt>forms</tt> is a property of the object
+              in <tt>document</tt>, <tt>sample</tt> is a property of the object
+              in <tt>forms</tt>, <tt>user</tt> is a property of the form, and so on.</li>
+          <li><b>dot operator</b>: Given an object <em>obj</em> and a property name
+              <em>prop</em>, <tt><em>obj</em>.<em>prop</em></tt> will get the 
+              value of that property of that object.</li>
+      </ul>
+      
+      <h2>Our challenge</h2>
+      
+      <p>Enough playing around. Clear the form fields, then
+      click <b>Submit</b>. You will go to a test page that shows the data
+      in the form. Then come back to this page.</p>
+      
+      <p>Now here's the problem. We don't want users to be able to submit the form if
+      there's no data! We want to cancel the submission if the fields
+      aren't valid. How do we do this? By attaching code to the form that validates
+      the form data.</p>
+      
+      <h2>Attaching code to objects</h2>
+      
+      <p>Now enter this into the Console:</p>
+      
+      <pre class="code-example">document.forms.sample.onsubmit</pre>
+      
+      <p>The <tt>onsubmit</tt> property of a form is where the browser
+      looks for code to run when you submit the form. In this case,
+      you saw the return value <b>null</b>. This is a special
+      object used to represent "no value." Since there is no special
+      code, clicking <b>Submit Form</b> just submits the form.</p>
+      
+      <p>Let's stop that. Enter this:</p>
+      
+      <pre class="code-example">document.forms.sample.onsubmit = function(event) { return false; }</pre>
+      
+      <p>The equal sign means "store the value on the right
+      in the location on the left." The thing we're storing is
+      a <b>function</b> object. A function is a package of code.</p> 
+      
+      <p>Now click on the <b>Submit Form</b> button. Nothing should happen. That's
+      because when you submit the form, the browser calls the above code,
+      and that code just returns <b>false</b>. When the browser
+      gets a false result, it cancels the action it was doing, in this case, submitting the form.
+      </p>
+      
+      <p>Re-enter the above line, but replace <b>false</b> with <b>true</b>. Now
+      click <b>Submit Form</b>. You should go to the "Form Data" page as before.</p>
+      
+      <p>We now have a key part of the puzzle: we can control
+      whether the form is submitted by returning true or false in the code
+      stored under <tt>onsubmit</tt> for the form. Now, how can we write 
+      code that returns false if the fields are empty?</p>
+      
+      <h2>Getting form data</h2>
+      
+      <p>Look at the function we stored again.</p>
+      
+      <pre class="code-example">document.forms.sample.onsubmit = function(event) { return false; }</pre>
+      
+      <p>The parentheses surround the <b>parameters</b> of our function. 
+      A parameter is an example of a <b>variable</b>. A variable is a
+      named location where values can be stored. There are actually three variables
+      in the line above:</p>
+      
+      <ul>
+          <li><tt>false</tt>, set by the JavaScript language to the "false" value</li>
+          <li><tt>document</tt>, set by the browser to the entire HTML page when the
+              page is loaded</li>
+          <li><tt>event</tt>, set by the browser to an object with properties
+              describing what kind of action just occurred on what object on the page</li>
+      </ul>
+      
+      <p><tt>document</tt> and <tt>false</tt> are <b>global</b> variables whose values
+      stay the same while you're on the page. <tt>event</tt> is a <b>local</b>
+      variable that is only defined inside the <b>body</b> of the function, i.e.,
+      between the curly braces. So to see what event looks like, we need to
+      print it out inside the function. One way to do that is to call
+      the built-in JavaScript function <tt>alert</tt>. Enter this code:</p>
+      
+      <pre class="code-example">document.forms.sample.onsubmit = function(event) { alert(event); return false; }</pre>
+      
+      <p>Now try to submit the form. A dialog box should pop up and print
+      the event object. All you'll see is that it's an event. Events
+      have a <tt>target</tt> property. Let's see what that is.</p>
+      
+      <pre class="code-example">document.forms.sample.onsubmit = function(event) { alert(event.target); return false; }</pre>
+      
+      <p>It's our form! That means we should be able to get the value of our user
+      input field with this:</p>
+      
+      <pre class="code-example">document.forms.sample.onsubmit = 
+          function(event) { alert(event.target.user.value); return false; }</pre>
+      
+      <p>Now we know how to get the values in
+      a form being submitted. How can we return false if the data is invalid?</p>
+      
+      <h2>Review</h2>
+      
+      <p>You have now seen some more important concepts.</p>
+      
+      <ul>
+          <li><b>event handlers</b>: An event handler is code that the browser
+              calls when an interaction event occurs. In particular,
+              code stored in the <tt>onsubmit</tt> property of a form will handle
+              the <tt>submit</tt> event for that form.</li>
+          <li><b>functions</b>: functions are packages of code.</li>
+          <li><b>parameters</b>: A function
+              takes zero or more <b>parameters</b>. When the function is <b>called</b>,
+              data will be specified, in parentheses, to assign to each parameter.</li>
+          <li><b>local variables</b>: A local variable is one that is private
+              to a function. No code outside the function can see or change
+              what's in a local variable.</li>
+          <li><b>assignment</b>: The assignment operator <tt>=</tt> can set
+              the value of a variable or a property.</li>
+          <li><b>true</b> and <b>false</b>: These are global constant variables
+              representing true and false. They are called <b>Boolean</b>
+              values, after the mathematician George Boole.</li>
+          <li><b>alert</b>: <tt>alert</tt> is a built-in function that you can
+              call to generate a pop-up dialog box. It is often used to tell
+              the user something, and sometimes to check the value of something
+              while debugging JavaScript code.
+              </ul>
+      
+      <h2>To tell the truth</h2>
+      
+      <p>The next piece of the puzzle is to be able to write some code
+      to test the value in a field. For example, is the field empty?
+      Since the value of a field is a string, how can you tell if a string
+      is empty? The two simplest ways are these. To make testing
+      simpler, first store some strings in 
+      some variables:</p>
+      
+      <pre class="code-example">someone = "john smith"</pre>
+      
+      <pre class="code-example">noone = ""</pre>
+      
+      <p>We've just created two variables, <tt>someone</tt>, containing
+      <tt>"john smith"</tt>, and <tt>noone</tt>, containing the empty string. 
+      Remember: Variable names can't have spaces in them. Just letters,
+      digits, and a few special characters like underscore.</p>
+      
+      <p>To see what's in a variable, just type its name, as we did
+      with <tt>document</tt>:</p>
+      
+      <pre class="code-example">someone</pre>
+      
+      <pre class="code-example">noone</pre>
+      
+      <p>One way to test to see if something is not empty is to
+      use the "not equal" operator, which is written <tt>!==</tt>.
+      (The exclamation mark is often used as a shorthand for "not" in 
+      programming languages.)</p>
+      
+      <pre class="code-example">someone !== ""</pre>
+      
+      <pre class="code-example">noone !== ""</pre>
+      
+      <p>Aha! Using <tt>!== ""</tt> with the value of a field will 
+      return false if the field value is empty. So let's try this bit of code
+      for <tt>onsubmit</tt>:</p>
+      
+      <pre class="code-example">document.forms.sample.onsubmit = 
+          function(event) { return event.target.user.value !== ""; }</pre>
+      
+      <p>Clear the user field, then submit the form. If you have
+      the above function stored, nothing should happen. Enter
+      something into the user field and submit. Now it should
+      go to the Form Data page.</p>
+      
+      <h2>"&amp;&amp;" then I wrote</h2>
+      
+      <p>We still have a problem. We want to make sure that both
+      user and age are filled in. We can test each one on its own with:</p>
+      
+      <ul>
+          <li><tt>event.target.user.value !== ""</tt></li>
+          <li><tt>event.target.age.value !== ""</tt></li>
+      </ul>
+      
+      <p>But how do we test that both are true?
+      The secret is the "and" operator, <tt>&amp;&amp;</tt>,
+      i.e., two ampersands together. An expression of the form
+      "A <tt>&amp;&amp;</tt> B" will be true if and only if both A
+      and B are true. Conversely, that means "A <tt>&amp;&amp;</tt> B"
+      will be false if either A or B is false. So try this code:</p>
+      
+      <pre class="code-example">document.forms.sample.onsubmit = 
+          function(event) { return (event.target.user.value !== "") && 
+          (event.target.age.value !== ""); }</pre>
+      
+      <p>We put parentheses around the two <tt>!==</tt> expressions
+      to make sure the computer and any programmer reading our code doesn't
+      get confused. If we did this correctly, the function should
+      return false if either of the fields, or both, are empty.</p>
+      
+      <p>Test it out! Clear both fields in the form. Try to submit. Fill in
+      one field. Try again. Now fill in both fields. Try one more time.</p>
+      
+      <h2>Remember what I said</h2>
+      
+      <p>Whenever you leave and come back to this page, or reload it,
+      the browser forgets any <tt>onsubmit</tt> function that you
+      stored using the Console. What you need
+      to do is change the HTML to load your JavaScript when it loads the page.</p>
+      
+      <p>To edit this file, and to do the remaining parts of this tutorial,
+      you need to <a href="validate-tutorial.zip">download this tutorial</a>. 
+      Open the file <tt>validate-pt1.html</tt> in your browser.</p>
+      
+      <p>I'll wait...</p>
+      
+      <p>Back already?</p>
+      
+      <p>Open your text editor and create a new file with
+      the above line of code for checking the user and age fields. Since
+      long lines are hard to read, indent it like this:</p>
+      
+      <pre class="code-example">document.forms.sample.onsubmit =
+  function(event) {
+    return (event.target.user.value !== "") && (event.target.age.value !== "");
+  };</pre>
+      
+      <p>Save the file in the same directory as the file for this page 
+      (so, wherever you put <tt>validate-pt1.html</tt>) and name it <tt>validate.js</tt> 
+      (<tt>.js</tt> is the standard extension for JavaScript files.)</p>
+      
+      <p>Now edit this HTML page. Remember, it's the file <tt>validate-pt1.html</tt> 
+      Go to the end where it says <tt>&lt;/body&gt;</tt>. Insert <em>before</em> 
+      the close body tag this bit of HTML:</p>
+      
+      <pre class="code-example">&lt;script type="text/javascript" src="validate.js"&gt;&lt;/script&gt;</pre>
+      
+      <p>When the browser loads this page and gets to this line, it will load
+      the JavaScript file. The code in that file will set the <tt>onsubmit</tt>
+      for the "sample" form, just as you've been doing by hand in the Console.</p>
+      
+      <p>Save, load the page in your browser, and test it out. Does the form 
+      submit with both fields blank? With one field blank? Does it submit with both 
+      fields filled?</p>
+
+      <p>Lastly, add that same bit of HTML to <tt>validate-pt2.html</tt> and to 
+      <tt> validate-pt3.html</tt>, again <em>before</em> the close body tag in each:
+
+      <pre class="code-example">&lt;script type="text/javascript" src="validate.js"&gt;&lt;/script&gt;</pre>
+  
+      <h2>Review</h2>
+      
+      <p>Finally! Your last batch of concepts for now.</p>
+      
+      <ul>
+          <li><b>comparison</b>: <tt>!==</tt> and <tt>&gt;</tt> are examples
+              of comparison operators. They return true or false, depending
+              on whether the comparison, i.e., "not equal to" or "greater than," is true.
+              Another common comparison operator is <tt>===</tt> for "equal to."
+          </li>
+          <li><b><tt>&amp;&amp;</tt></b>: The <tt>&amp;&amp;</tt> or "and" operator
+              takes two Boolean values and returns true if and only if both
+              values are true. Another useful operator is <tt>||</tt> which
+              takes two Boolean values and returns true if and only if either or both
+              of the values are true.</li>
+          <li><b>the script element</b>: The HTML <tt>script</tt> element is used to load
+              JavaScript source files. Scripts can be loaded in the head or body 
+              of a page. If script code modifies HTML elements, e.g.,
+              attaches event handlers to forms, then load the script at the
+              end of the body section, to make sure that the browser has constructed
+              the element being modified.
+          </li>
+          <li><b>Unobtrusive JavaScript</b>: We snuck this by you. Did you notice
+              what we had to change in the form to do validation? Nothing! Instead,
+              the JavaScript installed itself on the form when loaded. This is better
+              than a technique you'll see on many websites that requires
+              adding an <tt>onsubmit</tt> attribute to the <tt>FORM</tt> tag.</li>
+      </ul>
+      
+      <h2>What's Next</h2>
+      
+      <p>Congratulations! You've learned to use the JavaScript Console,
+      wrote some code to control when a form can be submitted, and learned
+      quite a few big concepts. Take
+      a breath. Take a walk. When you're ready, come back for
+      <a href="validate-pt2.html">Part 2: Helping the User</a>, where we'll deal with 
+      the fact that the current user interface is very user unfriendly.</p>
+      
+  </div>
+
+<div class="authorBio"><img src="Chris-Riesbeck.jpg" width="80" alt="Chris Riesbeck Photo" class="authorPhoto" /><div class="authorInfo"><h2>About the Author</h2>Chris Riesbeck holds a Ph.D. and M.A. in Computer Science from Stanford University and was the Acting Director for the Center for Technology and Social Behavior at Northwestern University. Currently, Chris is an Associate Professor in the Department of Electrical Engineering and Computer Science at Northwestern University.</div>
+</div>
+<script type="text/javascript" src="validate.js"></script>
+</body>
+
+</html>
